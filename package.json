@@ -4,21 +4,31 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "lint": "eslint .",
+    "lint": "next lint",
     "format": "prettier --write .",
     "prepare": "husky"
+  },
+  "dependencies": {
+    "next": "^15.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@types/node": "^22.5.4",
     "@typescript-eslint/eslint-plugin": "^8.4.0",
     "@typescript-eslint/parser": "^8.4.0",
+    "autoprefixer": "^10.4.21",
     "eslint": "^9.9.0",
     "eslint-config-prettier": "^9.1.0",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.9",
+    "postcss": "^8.5.6",
     "prettier": "^3.3.3",
+    "tailwindcss": "^4.1.12",
     "typescript": "^5.5.4"
   },
   "lint-staged": {
