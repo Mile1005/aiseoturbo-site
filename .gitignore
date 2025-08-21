@@ -1,4 +1,14 @@
 node_modules
+.next
+out
+dist
+.vercel
+.DS_Store
+.env
+.env.local
+.env.*.local
+*.tsbuildinfo
+node_modules
 dist
 .DS_Store
 
