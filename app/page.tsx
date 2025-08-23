@@ -15,9 +15,9 @@ export default function HomePage() {
 
 	return (
 		<>
-			{/* Hero Section - Serpstat Style */}
+			{/* Hero Section - Exact Serpstat Style */}
 			<section className="relative min-h-screen flex items-center justify-center bg-white overflow-hidden">
-				{/* Subtle Background Elements */}
+				{/* Background Elements */}
 				<div className="absolute inset-0">
 					<div className="absolute top-20 left-20 w-32 h-32 bg-blue-100 rounded-full blur-3xl opacity-30" />
 					<div className="absolute bottom-20 right-20 w-24 h-24 bg-purple-100 rounded-full blur-3xl opacity-30" />
@@ -52,7 +52,7 @@ export default function HomePage() {
 							Start your analysis for free
 						</motion.p>
 						
-						{/* Search Input - Serpstat Style */}
+						{/* Search Input - Exact Serpstat Style */}
 						<motion.div 
 							initial={{ opacity: 0, y: 20 }}
 							animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -71,7 +71,7 @@ export default function HomePage() {
 							</div>
 						</motion.div>
 
-						{/* Trust Indicators */}
+						{/* Trust Indicators - Exact Serpstat Style */}
 						<motion.div 
 							initial={{ opacity: 0, y: 20 }}
 							animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -97,7 +97,7 @@ export default function HomePage() {
 				</div>
 			</section>
 
-			{/* Marketing Tools Section */}
+			{/* Marketing Tools Section - Exact Serpstat Style */}
 			<section className="py-20 bg-gray-50">
 				<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 					<motion.div
@@ -174,7 +174,7 @@ export default function HomePage() {
 				</div>
 			</section>
 
-			{/* Stats Section */}
+			{/* Stats Section - Exact Serpstat Style */}
 			<section className="py-20 bg-white">
 				<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 					<motion.div
@@ -215,7 +215,7 @@ export default function HomePage() {
 				</div>
 			</section>
 
-			{/* Final CTA Section */}
+			{/* Final CTA Section - Exact Serpstat Style */}
 			<section className="py-20 bg-blue-600">
 				<div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
 					<motion.div
