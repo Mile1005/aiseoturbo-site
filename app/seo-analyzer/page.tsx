@@ -68,75 +68,65 @@ function SeoAnalyzerContent() {
 
 		setAuditResult({ status: 'loading' });
 
-		// Simulate audit processing
-		setTimeout(() => {
-			const mockData: AuditData = {
-				scores: {
-					overall: 78,
-					title_meta: 85,
-					headings: 72,
-					answerability: 80,
-					structure: 75,
-					schema: 60,
-					images: 90,
-					internal_links: 85
+		try {
+			// Start the audit
+			const startResponse = await fetch('/api/seo-audit/start', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
 				},
-				issues: [
-					{
-						id: "missing-meta-description",
-						category: "title_meta",
-						severity: "medium",
-						found: "Missing meta description",
-						why_it_matters: "Meta descriptions help users understand what your page is about in search results",
-						recommendation: "Add a compelling meta description between 150-160 characters",
-						snippet: '<meta name="description" content="Your description here">'
-					},
-					{
-						id: "missing-h1",
-						category: "headings",
-						severity: "high",
-						found: "Missing H1 heading",
-						why_it_matters: "H1 headings help search engines understand your page structure",
-						recommendation: "Add a single, descriptive H1 heading to your page",
-						snippet: '<h1>Your Main Heading</h1>'
-					},
-					{
-						id: "missing-alt-text",
-						category: "images",
-						severity: "low",
-						found: "Images missing alt text",
-						why_it_matters: "Alt text improves accessibility and helps search engines understand images",
-						recommendation: "Add descriptive alt text to all images",
-						snippet: '<img src="image.jpg" alt="Descriptive text">'
+				body: JSON.stringify({
+					url: url.trim(),
+					email: email.trim() || undefined,
+					keyword: keyword.trim() || undefined,
+				}),
+			});
+
+			if (!startResponse.ok) {
+				throw new Error('Failed to start audit');
+			}
+
+			const startData = await startResponse.json();
+			const auditId = startData.audit_id;
+
+			// Poll for results
+			const pollForResults = async () => {
+				try {
+					const resultResponse = await fetch(`/api/seo-audit/result?audit_id=${auditId}`);
+					
+					if (!resultResponse.ok) {
+						throw new Error('Failed to fetch results');
 					}
-				],
-				quick_wins: [
-					{
-						issue_id: "missing-meta-description",
-						estimated_impact: "medium",
-						action: "Add meta description to improve click-through rates",
-						snippet: '<meta name="description" content="Your description here">'
-					},
-					{
-						issue_id: "missing-h1",
-						estimated_impact: "high",
-						action: "Add H1 heading to improve page structure",
-						snippet: '<h1>Your Main Heading</h1>'
+
+					const resultData = await resultResponse.json();
+
+					if (resultData.status === 'ready' && resultData.result) {
+						setAuditResult({ status: 'success', data: resultData.result });
+					} else if (resultData.status === 'processing') {
+						// Continue polling
+						setTimeout(pollForResults, 2000);
+					} else {
+						throw new Error('Audit failed or timed out');
 					}
-				],
-				stats: {
-					word_count: 1250,
-					reading_time_min: 5,
-					images_count: 8,
-					h2_count: 4,
-					h3_count: 6,
-					tables_count: 2,
-					lists_count: 3
+				} catch (error) {
+					console.error('Error polling for results:', error);
+					setAuditResult({ 
+						status: 'error', 
+						error: 'Failed to get audit results. Please try again.' 
+					});
 				}
 			};
-			
-			setAuditResult({ status: 'success', data: mockData });
-		}, 2000);
+
+			// Start polling
+			pollForResults();
+
+		} catch (error) {
+			console.error('Error starting audit:', error);
+			setAuditResult({ 
+				status: 'error', 
+				error: 'Failed to start audit. Please check your URL and try again.' 
+			});
+		}
 	};
 
 

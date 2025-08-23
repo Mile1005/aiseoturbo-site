@@ -83,14 +83,15 @@ function SiteCrawlerContent() {
       // Start the crawl
       const startResponse = await fetch('/api/site-crawler/start', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
-          startUrl: url,
-          limit,
-          sameHostOnly,
-          maxDepth,
-          timeout: 10000
-        })
+          url: url.trim(),
+          max_pages: limit,
+          max_depth: maxDepth,
+          same_host_only: sameHostOnly,
+        }),
       });
 
       if (!startResponse.ok) {
@@ -98,55 +99,49 @@ function SiteCrawlerContent() {
       }
 
       const startData = await startResponse.json();
-      
-      if (startData.status === 'ready' && startData.result) {
-        // Crawl completed immediately
-        setCrawlResult({ status: 'success', data: startData.result });
-      } else if (startData.crawlId) {
-        // Poll for results
-        await pollForResults(startData.crawlId);
-      } else {
-        throw new Error('Invalid response from crawl service');
-      }
+      const crawlId = startData.crawl_id;
+
+      // Poll for results
+      const pollForResults = async () => {
+        try {
+          const resultResponse = await fetch(`/api/site-crawler/result?crawl_id=${crawlId}`);
+          
+          if (!resultResponse.ok) {
+            throw new Error('Failed to fetch results');
+          }
+
+          const resultData = await resultResponse.json();
+
+          if (resultData.status === 'ready' && resultData.result) {
+            setCrawlResult({ status: 'success', data: resultData.result });
+          } else if (resultData.status === 'processing') {
+            // Continue polling
+            setTimeout(pollForResults, 3000);
+          } else {
+            throw new Error('Crawl failed or timed out');
+          }
+        } catch (error) {
+          console.error('Error polling for results:', error);
+          setCrawlResult({ 
+            status: 'error', 
+            error: 'Failed to get crawl results. Please try again.' 
+          });
+        }
+      };
+
+      // Start polling
+      pollForResults();
+
     } catch (error) {
-      console.error('Crawl error:', error);
+      console.error('Error starting crawl:', error);
       setCrawlResult({ 
         status: 'error', 
-        error: error instanceof Error ? error.message : 'Crawl failed' 
+        error: 'Failed to start crawl. Please check your URL and try again.' 
       });
     }
   };
 
-  const pollForResults = async (crawlId: string) => {
-    const maxAttempts = 60; // 60 seconds max for crawls
-    let attempts = 0;
 
-    const poll = async () => {
-      try {
-        const response = await fetch(`/api/site-crawler/result?id=${crawlId}`);
-        const data = await response.json();
-
-        if (data.status === 'ready' && data.result) {
-          setCrawlResult({ status: 'success', data: data.result });
-          return;
-        } else if (data.status === 'failed') {
-          throw new Error(data.error || 'Crawl failed');
-        } else if (attempts >= maxAttempts) {
-          throw new Error('Crawl timeout - please try again');
-        }
-
-        attempts++;
-        setTimeout(poll, 1000); // Poll every second
-      } catch (error) {
-        setCrawlResult({ 
-          status: 'error', 
-          error: error instanceof Error ? error.message : 'Polling failed' 
-        });
-      }
-    };
-
-    poll();
-  };
 
   const getStatusColor = (status: number) => {
     if (status >= 200 && status < 300) return 'text-green-600 bg-green-100';
