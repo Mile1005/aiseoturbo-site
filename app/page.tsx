@@ -17,7 +17,7 @@ export default function HomePage() {
 
 	const handleSearch = () => {
 		if (searchQuery.trim()) {
-			window.open(`https://app.aiseoturbo.com/audit?url=${encodeURIComponent(searchQuery)}`, '_blank');
+			window.location.href = `/seo-analyzer?url=${encodeURIComponent(searchQuery)}`;
 		}
 	};
 

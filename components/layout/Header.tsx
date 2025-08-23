@@ -25,7 +25,7 @@ export default function Header() {
 		{
 			title: "SEO Audit",
 			description: "Find and fix on-site issues to boost your Google rankings",
-			href: "/features/seo-audit",
+			href: "/seo-analyzer",
 			icon: (
 				<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -56,9 +56,9 @@ export default function Header() {
 			gradient: "from-purple-500 to-pink-500"
 		},
 		{
-			title: "Rank Tracker",
-			description: "Monitor website rankings on mobile and desktop",
-			href: "/features/rank-tracker",
+			title: "SERP Position Tracker",
+			description: "Track keyword rankings across multiple countries",
+			href: "/serp-tracker",
 			icon: (
 				<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
@@ -67,15 +67,26 @@ export default function Header() {
 			gradient: "from-orange-500 to-red-500"
 		},
 		{
-			title: "Page Crawl",
-			description: "Crawl and analyze your website pages for technical issues",
-			href: "/features/page-crawl",
+			title: "Site Crawler",
+			description: "Crawl and analyze your entire website for technical issues and broken links",
+			href: "/site-crawler",
 			icon: (
 				<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
 				</svg>
 			),
 			gradient: "from-teal-500 to-cyan-500"
+		},
+		{
+			title: "AI Content Analyzer",
+			description: "Analyze content sentiment, intent, toxicity and more with AI",
+			href: "/ai-content-analyzer",
+			icon: (
+				<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+				</svg>
+			),
+			gradient: "from-purple-500 to-pink-500"
 		},
 		{
 			title: "API & Data Solutions",
