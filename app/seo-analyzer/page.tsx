@@ -68,72 +68,78 @@ function SeoAnalyzerContent() {
 
 		setAuditResult({ status: 'loading' });
 
-		try {
-			// Start the audit
-			const startResponse = await fetch('/api/seo-audit/start', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
-					pageUrl: url,
-					email: email || '',
-					targetKeyword: keyword || ''
-				})
-			});
-
-			if (!startResponse.ok) {
-				throw new Error('Failed to start audit');
-			}
-
-			const startData = await startResponse.json();
-			
-			if (startData.status === 'ready' && startData.result) {
-				// Audit completed immediately
-				setAuditResult({ status: 'success', data: startData.result });
-			} else if (startData.runId) {
-				// Poll for results
-				await pollForResults(startData.runId);
-			} else {
-				throw new Error('Invalid response from audit service');
-			}
-		} catch (error) {
-			console.error('Audit error:', error);
-			setAuditResult({ 
-				status: 'error', 
-				error: error instanceof Error ? error.message : 'Audit failed' 
-			});
-		}
-	};
-
-	const pollForResults = async (runId: string) => {
-		const maxAttempts = 30; // 30 seconds max
-		let attempts = 0;
-
-		const poll = async () => {
-			try {
-				const response = await fetch(`/api/seo-audit/result?runId=${runId}`);
-				const data = await response.json();
-
-				if (data.status === 'done' && data.result) {
-					setAuditResult({ status: 'success', data: data.result });
-					return;
-				} else if (data.status === 'error') {
-					throw new Error(data.error || 'Audit failed');
-				} else if (attempts >= maxAttempts) {
-					throw new Error('Audit timeout - please try again');
+		// Simulate audit processing
+		setTimeout(() => {
+			const mockData: AuditData = {
+				scores: {
+					overall: 78,
+					title_meta: 85,
+					headings: 72,
+					answerability: 80,
+					structure: 75,
+					schema: 60,
+					images: 90,
+					internal_links: 85
+				},
+				issues: [
+					{
+						id: "missing-meta-description",
+						category: "title_meta",
+						severity: "medium",
+						found: "Missing meta description",
+						why_it_matters: "Meta descriptions help users understand what your page is about in search results",
+						recommendation: "Add a compelling meta description between 150-160 characters",
+						snippet: '<meta name="description" content="Your description here">'
+					},
+					{
+						id: "missing-h1",
+						category: "headings",
+						severity: "high",
+						found: "Missing H1 heading",
+						why_it_matters: "H1 headings help search engines understand your page structure",
+						recommendation: "Add a single, descriptive H1 heading to your page",
+						snippet: '<h1>Your Main Heading</h1>'
+					},
+					{
+						id: "missing-alt-text",
+						category: "images",
+						severity: "low",
+						found: "Images missing alt text",
+						why_it_matters: "Alt text improves accessibility and helps search engines understand images",
+						recommendation: "Add descriptive alt text to all images",
+						snippet: '<img src="image.jpg" alt="Descriptive text">'
+					}
+				],
+				quick_wins: [
+					{
+						issue_id: "missing-meta-description",
+						estimated_impact: "medium",
+						action: "Add meta description to improve click-through rates",
+						snippet: '<meta name="description" content="Your description here">'
+					},
+					{
+						issue_id: "missing-h1",
+						estimated_impact: "high",
+						action: "Add H1 heading to improve page structure",
+						snippet: '<h1>Your Main Heading</h1>'
+					}
+				],
+				stats: {
+					word_count: 1250,
+					reading_time_min: 5,
+					images_count: 8,
+					h2_count: 4,
+					h3_count: 6,
+					tables_count: 2,
+					lists_count: 3
 				}
-
-				attempts++;
-				setTimeout(poll, 1000); // Poll every second
-			} catch (error) {
-				setAuditResult({ 
-					status: 'error', 
-					error: error instanceof Error ? error.message : 'Polling failed' 
-				});
-			}
-		};
-
-		poll();
+			};
+			
+			setAuditResult({ status: 'success', data: mockData });
+		}, 2000);
 	};
+
+
 
 	const formatScore = (score: number) => {
 		if (score >= 90) return { text: 'Excellent', color: 'text-green-600', bg: 'bg-green-100' };

@@ -27,73 +27,40 @@ export default function Header() {
 			description: "Find and fix on-site issues to boost your Google rankings",
 			href: "/seo-analyzer",
 			icon: (
-				<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
 				</svg>
 			),
 			gradient: "from-green-500 to-emerald-500"
 		},
 		{
-			title: "Competitors Analysis",
-			description: "Analyze competitors' sites in SEO and PPC strategy",
-			href: "/features/competitors-analysis",
-			icon: (
-				<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-				</svg>
-			),
-			gradient: "from-blue-500 to-indigo-500"
-		},
-		{
 			title: "Keyword Research",
-			description: "Pick the right keywords for SEO and PPC campaigns that attract your audience",
+			description: "Pick the right keywords for SEO and PPC campaigns",
 			href: "/features/keyword-research",
 			icon: (
-				<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
 				</svg>
 			),
 			gradient: "from-purple-500 to-pink-500"
 		},
 		{
-			title: "SERP Position Tracker",
-			description: "Track keyword rankings across multiple countries",
-			href: "/serp-tracker",
+			title: "Competitors Analysis",
+			description: "Analyze competitors' sites in SEO and PPC strategy",
+			href: "/features/competitors-analysis",
 			icon: (
-				<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+				<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
 				</svg>
 			),
-			gradient: "from-orange-500 to-red-500"
-		},
-		{
-			title: "Site Crawler",
-			description: "Crawl and analyze your entire website for technical issues and broken links",
-			href: "/site-crawler",
-			icon: (
-				<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-				</svg>
-			),
-			gradient: "from-teal-500 to-cyan-500"
-		},
-		{
-			title: "AI Content Analyzer",
-			description: "Analyze content sentiment, intent, toxicity and more with AI",
-			href: "/ai-content-analyzer",
-			icon: (
-				<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-				</svg>
-			),
-			gradient: "from-purple-500 to-pink-500"
+			gradient: "from-blue-500 to-indigo-500"
 		},
 		{
 			title: "API & Data Solutions",
 			description: "The best-cost-efficient API SEO data provider",
 			href: "/features/api-solutions",
 			icon: (
-				<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
 				</svg>
 			),
@@ -133,24 +100,24 @@ export default function Header() {
 						
 						{/* Dropdown Menu */}
 						{isFeaturesOpen && (
-							<div className="absolute top-full left-0 mt-2 w-96 bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-200/50 overflow-hidden">
-								<div className="p-6">
-									<div className="grid grid-cols-1 gap-4">
+							<div className="absolute top-full left-0 mt-2 w-80 bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-200/50 overflow-hidden">
+								<div className="p-4">
+									<div className="grid grid-cols-1 gap-2">
 										{features.map((feature, index) => (
 											<Link
 												key={index}
 												href={feature.href}
 												onClick={() => setIsFeaturesOpen(false)}
-												className="group flex items-start gap-4 p-4 rounded-xl hover:bg-gray-50/80 transition-all duration-200 hover:scale-105"
+												className="group flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50/80 transition-all duration-200"
 											>
-												<div className={`w-12 h-12 bg-gradient-to-r ${feature.gradient} rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-200`}>
+												<div className={`w-10 h-10 bg-gradient-to-r ${feature.gradient} rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-200`}>
 													{feature.icon}
 												</div>
 												<div className="flex-1">
-													<h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+													<h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors text-sm">
 														{feature.title}
 													</h3>
-													<p className="text-sm text-gray-600 mt-1">
+													<p className="text-xs text-gray-600 mt-0.5">
 														{feature.description}
 													</p>
 												</div>
