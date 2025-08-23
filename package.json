@@ -17,6 +17,7 @@
     "@contentlayer/utils": "^0.3.4",
     "@mdx-js/react": "^2.3.0",
     "@next/mdx": "^15.5.0",
+    "@tailwindcss/postcss": "^4.1.12",
     "@vercel/og": "^0.8.5",
     "framer-motion": "^12.23.12",
     "gray-matter": "^4.0.3",
