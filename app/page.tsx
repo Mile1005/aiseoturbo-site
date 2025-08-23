@@ -3,316 +3,240 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import BrandContainer from '../components/brand/BrandContainer';
-import SectionHeading from '../components/brand/SectionHeading';
-import LogoStrip from '../components/brand/LogoStrip';
-import { fadeUp, rise, stagger } from '../lib/motion';
 
 export default function HomePage() {
 	const heroRef = useRef(null);
 	const featuresRef = useRef(null);
-	const testimonialsRef = useRef(null);
+	const statsRef = useRef(null);
 	
 	const heroInView = useInView(heroRef, { once: true });
 	const featuresInView = useInView(featuresRef, { once: true });
-	const testimonialsInView = useInView(testimonialsRef, { once: true });
+	const statsInView = useInView(statsRef, { once: true });
 
 	return (
 		<>
-			{/* Hero Section */}
-			<section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-				{/* Animated Background */}
-				<div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-purple-900 to-blue-900">
-					<div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.3),transparent_50%)]" />
-					{/* Animated shapes */}
-					<motion.div 
-						className="absolute top-20 left-20 w-32 h-32 bg-blue-500/20 rounded-full blur-xl"
-						animate={{ 
-							x: [0, 100, 0],
-							y: [0, -50, 0],
-						}}
-						transition={{ 
-							duration: 20, 
-							repeat: Infinity, 
-							ease: "linear" 
-						}}
-					/>
-					<motion.div 
-						className="absolute bottom-20 right-20 w-24 h-24 bg-purple-500/20 rounded-full blur-xl"
-						animate={{ 
-							x: [0, -80, 0],
-							y: [0, 60, 0],
-						}}
-						transition={{ 
-							duration: 25, 
-							repeat: Infinity, 
-							ease: "linear" 
-						}}
-					/>
+			{/* Hero Section - Serpstat Style */}
+			<section className="relative min-h-screen flex items-center justify-center bg-white overflow-hidden">
+				{/* Subtle Background Elements */}
+				<div className="absolute inset-0">
+					<div className="absolute top-20 left-20 w-32 h-32 bg-blue-100 rounded-full blur-3xl opacity-30" />
+					<div className="absolute bottom-20 right-20 w-24 h-24 bg-purple-100 rounded-full blur-3xl opacity-30" />
+					<div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-blue-50 to-purple-50 rounded-full blur-3xl opacity-20" />
 				</div>
 
-				<BrandContainer className="relative z-10 text-center space-y-8">
+				<div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
 					<motion.div
 						ref={heroRef}
-						initial="hidden"
-						animate={heroInView ? "show" : "hidden"}
-						variants={stagger}
-						className="space-y-6"
+						initial={{ opacity: 0, y: 20 }}
+						animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+						transition={{ duration: 0.8 }}
+						className="space-y-8"
 					>
 						<motion.h1 
-							variants={rise}
-							className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white"
+							initial={{ opacity: 0, y: 20 }}
+							animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+							transition={{ duration: 0.8, delay: 0.2 }}
+							className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-gray-900 leading-tight"
 						>
-							Turbocharge Your{' '}
-							<span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-								SEO Strategy
-							</span>{' '}
-							with AI
+							Speed up{' '}
+							<span className="text-blue-600">search marketing</span>{' '}
+							goals achievement
 						</motion.h1>
 						
 						<motion.p 
-							variants={fadeUp}
-							className="text-xl sm:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed"
+							initial={{ opacity: 0, y: 20 }}
+							animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+							transition={{ duration: 0.8, delay: 0.4 }}
+							className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
 						>
-							AI-powered audits, rank tracking, and backlink insights — all in one place.
+							Start your analysis for free
 						</motion.p>
 						
-						<motion.div variants={fadeUp} className="flex items-center justify-center gap-4">
-							<a 
-								href="https://app.aiseoturbo.com/signup" 
-								className="inline-flex items-center rounded-full px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold text-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl"
-							>
-								Start Free Audit
-							</a>
-							<a 
-								href="#features" 
-								className="inline-flex items-center rounded-full px-8 py-4 border-2 border-white/30 text-white font-semibold text-lg hover:bg-white/10 transition-all duration-300"
-							>
-								See Features
-							</a>
+						{/* Search Input - Serpstat Style */}
+						<motion.div 
+							initial={{ opacity: 0, y: 20 }}
+							animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+							transition={{ duration: 0.8, delay: 0.6 }}
+							className="flex items-center justify-center max-w-2xl mx-auto"
+						>
+							<div className="relative w-full">
+								<input 
+									type="text" 
+									placeholder="Enter domain, keyword or URL here" 
+									className="w-full px-6 py-4 text-lg border-2 border-gray-200 rounded-full focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all"
+								/>
+								<button className="absolute right-2 top-2 px-8 py-2 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 transition-colors">
+									Search
+								</button>
+							</div>
+						</motion.div>
+
+						{/* Trust Indicators */}
+						<motion.div 
+							initial={{ opacity: 0, y: 20 }}
+							animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+							transition={{ duration: 0.8, delay: 0.8 }}
+							className="flex items-center justify-center gap-8 text-sm text-gray-500"
+						>
+							<div className="flex items-center gap-2">
+								<div className="flex">
+									{[...Array(5)].map((_, i) => (
+										<svg key={i} className="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+											<path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+										</svg>
+									))}
+								</div>
+								<span>Based on 600+ reviews</span>
+							</div>
+							<div className="flex items-center gap-4">
+								<div className="w-8 h-8 bg-gray-200 rounded flex items-center justify-center font-bold text-gray-600">G2</div>
+								<div className="w-8 h-8 bg-gray-200 rounded flex items-center justify-center font-bold text-gray-600">C</div>
+							</div>
 						</motion.div>
 					</motion.div>
-
-					{/* 3D Dashboard Mockup */}
-					<motion.div 
-						variants={fadeUp}
-						className="mt-16 relative"
-					>
-						<div className="relative">
-							<div className="rounded-3xl bg-white/10 backdrop-blur-xl border border-white/20 p-8 shadow-2xl">
-								<div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-xl">
-									<div className="space-y-4">
-										<div className="flex items-center justify-between">
-											<div className="h-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded w-1/3"></div>
-											<div className="flex gap-2">
-												<div className="w-3 h-3 bg-green-500 rounded-full"></div>
-												<div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-												<div className="w-3 h-3 bg-red-500 rounded-full"></div>
-											</div>
-										</div>
-										<div className="grid grid-cols-3 gap-4">
-											<div className="h-20 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/50 dark:to-blue-800/50 rounded-lg p-3">
-												<div className="text-xs text-gray-600 dark:text-gray-400">SEO Score</div>
-												<div className="text-2xl font-bold text-blue-600">92</div>
-											</div>
-											<div className="h-20 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/50 dark:to-green-800/50 rounded-lg p-3">
-												<div className="text-xs text-gray-600 dark:text-gray-400">Rankings</div>
-												<div className="text-2xl font-bold text-green-600">+15</div>
-											</div>
-											<div className="h-20 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/50 dark:to-purple-800/50 rounded-lg p-3">
-												<div className="text-xs text-gray-600 dark:text-gray-400">Backlinks</div>
-												<div className="text-2xl font-bold text-purple-600">1.2k</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							{/* Floating elements */}
-							<motion.div 
-								className="absolute -top-4 -right-4 w-8 h-8 bg-blue-400 rounded-full shadow-lg"
-								animate={{ y: [-10, 10, -10] }}
-								transition={{ duration: 3, repeat: Infinity }}
-							/>
-							<motion.div 
-								className="absolute -bottom-4 -left-4 w-6 h-6 bg-purple-400 rounded-full shadow-lg"
-								animate={{ y: [10, -10, 10] }}
-								transition={{ duration: 4, repeat: Infinity }}
-							/>
-						</div>
-					</motion.div>
-				</BrandContainer>
+				</div>
 			</section>
 
-			{/* Features Section */}
-			<section id="features" className="py-20 bg-white dark:bg-gray-900">
-				<BrandContainer>
+			{/* Marketing Tools Section */}
+			<section className="py-20 bg-gray-50">
+				<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 					<motion.div
 						ref={featuresRef}
-						initial="hidden"
-						animate={featuresInView ? "show" : "hidden"}
-						variants={stagger}
-						className="text-center space-y-12"
+						initial={{ opacity: 0, y: 20 }}
+						animate={featuresInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+						transition={{ duration: 0.8 }}
+						className="text-center space-y-16"
 					>
-						<motion.div variants={fadeUp}>
-							<SectionHeading 
-								title="All-in-One AI SEO Platform" 
-								subcopy="Everything you need to dominate search rankings in one powerful platform."
-							/>
-						</motion.div>
+						<div className="space-y-4">
+							<h2 className="text-4xl font-bold text-gray-900">
+								Marketing tools to speed up SEO tasks
+							</h2>
+						</div>
 						
-						<motion.div 
-							variants={stagger}
-							className="grid grid-cols-1 md:grid-cols-3 gap-8"
-						>
-							<motion.div 
-								variants={fadeUp}
-								className="group p-8 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/50 dark:to-indigo-950/50 border border-blue-200/50 dark:border-blue-800/50 hover:shadow-xl transition-all duration-300"
-							>
-								<div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-									<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-									</svg>
-								</div>
-								<h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">SEO Audit</h3>
-								<p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-									Uncover technical SEO issues with AI-driven audits that provide actionable insights and prioritized fixes.
-								</p>
-							</motion.div>
-							
-							<motion.div 
-								variants={fadeUp}
-								className="group p-8 rounded-2xl bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/50 dark:to-emerald-950/50 border border-green-200/50 dark:border-green-800/50 hover:shadow-xl transition-all duration-300"
-							>
-								<div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-									<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-									</svg>
-								</div>
-								<h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Rank Tracking</h3>
-								<p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-									Monitor keyword positions with real-time updates and comprehensive analytics to track your SEO progress.
-								</p>
-							</motion.div>
-							
-							<motion.div 
-								variants={fadeUp}
-								className="group p-8 rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/50 dark:to-pink-950/50 border border-purple-200/50 dark:border-purple-800/50 hover:shadow-xl transition-all duration-300"
-							>
-								<div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-									<svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-									</svg>
-								</div>
-								<h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Backlink Insights</h3>
-								<p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-									Get a snapshot of your link profile and competitors with detailed backlink analysis and growth tracking.
-								</p>
-							</motion.div>
-						</motion.div>
-					</motion.div>
-				</BrandContainer>
-			</section>
-
-			{/* Social Proof Section */}
-			<section className="py-20 bg-gray-50 dark:bg-gray-800">
-				<BrandContainer>
-					<motion.div
-						ref={testimonialsRef}
-						initial="hidden"
-						animate={testimonialsInView ? "show" : "hidden"}
-						variants={stagger}
-						className="text-center space-y-12"
-					>
-						<motion.div variants={fadeUp}>
-							<SectionHeading 
-								title="Trusted by Marketers & Businesses" 
-								subcopy="Join thousands of professionals who trust AISEO Turbo for their SEO success."
-							/>
-						</motion.div>
-						
-						<motion.div variants={fadeUp} className="mb-12">
-							<LogoStrip />
-						</motion.div>
-						
-						<motion.div 
-							variants={stagger}
-							className="grid grid-cols-1 md:grid-cols-3 gap-8"
-						>
+						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 							{[
 								{
-									quote: "AISEO Turbo transformed our SEO strategy. The AI insights are incredibly accurate and actionable.",
-									name: "Sarah Johnson",
-									title: "Marketing Director",
-									company: "TechFlow Inc."
+									title: "Competitors analysis",
+									description: "Find out who your real search competitors are",
+									features: [
+										"Get traffic, visibility, number of backlinks, and other SEO metrics",
+										"Unveil hidden keyword opportunities based on competitors' keywords",
+										"Check the ads of your competitors to speed up PPC campaign creation"
+									],
+									color: "blue"
 								},
 								{
-									quote: "Finally, an SEO tool that actually helps you improve rankings, not just track them.",
-									name: "Michael Chen",
-									title: "SEO Manager",
-									company: "GrowthLab"
+									title: "Site audit",
+									description: "Use detailed recommendations to improve your website without an SEO agency",
+									features: [
+										"Sort out technical issues on your site by their priority",
+										"Schedule automatic checks and monitor if the number of issues found is decreasing",
+										"Track the growth dynamics of the site optimization level"
+									],
+									color: "green"
 								},
 								{
-									quote: "The automated audits save us hours every week. Highly recommended for any serious SEO team.",
-									name: "Emily Rodriguez",
-									title: "Digital Marketing Lead",
-									company: "ScaleUp Agency"
+									title: "Keyword research",
+									description: "Fast keywords research on any topic",
+									features: [
+										"Keywords from 230 countries in Google with keyword difficulty, search volume, and cost per click in one tool",
+										"Plan a budget and select only effective keywords for running ads with analyzing keywords PPC metrics"
+									],
+									color: "purple"
 								}
-							].map((testimonial, index) => (
+							].map((tool, index) => (
 								<motion.div 
 									key={index}
-									variants={fadeUp}
-									className="p-8 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all duration-300"
+									initial={{ opacity: 0, y: 20 }}
+									animate={featuresInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+									transition={{ duration: 0.8, delay: index * 0.2 }}
+									className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-shadow"
 								>
-									<div className="text-gray-600 dark:text-gray-300 mb-6 italic">
-										&ldquo;{testimonial.quote}&rdquo;
-									</div>
-									<div className="flex items-center space-x-4">
-										<div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold">
-											{testimonial.name.charAt(0)}
-										</div>
-										<div>
-											<div className="font-semibold text-gray-900 dark:text-white">{testimonial.name}</div>
-											<div className="text-sm text-gray-600 dark:text-gray-400">{testimonial.title}, {testimonial.company}</div>
-										</div>
+									<h3 className="text-2xl font-bold text-gray-900 mb-4">{tool.title}</h3>
+									<p className="text-gray-600 mb-6">{tool.description}</p>
+									<ul className="space-y-3 text-left">
+										{tool.features.map((feature, i) => (
+											<li key={i} className="flex items-start gap-3">
+												<div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
+												<span className="text-gray-600 text-sm">{feature}</span>
+											</li>
+										))}
+									</ul>
+									<div className="mt-6">
+										<a href="#" className="text-blue-600 font-semibold hover:text-blue-700 transition-colors">
+											Get access with no charges →
+										</a>
 									</div>
 								</motion.div>
 							))}
-						</motion.div>
+						</div>
 					</motion.div>
-				</BrandContainer>
+				</div>
+			</section>
+
+			{/* Stats Section */}
+			<section className="py-20 bg-white">
+				<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+					<motion.div
+						ref={statsRef}
+						initial={{ opacity: 0, y: 20 }}
+						animate={statsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+						transition={{ duration: 0.8 }}
+						className="text-center space-y-12"
+					>
+						<div className="space-y-4">
+							<h2 className="text-4xl font-bold text-gray-900">
+								USE the right data
+							</h2>
+						</div>
+						
+						<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+							{[
+								{ value: "1.50B", label: "Domains" },
+								{ value: "8.62B", label: "Keywords" },
+								{ value: "529B", label: "Backlinks" },
+								{ value: "5.6B", label: "Keywords suggestions" },
+								{ value: "230", label: "Countries" },
+								{ value: "2.21B", label: "Google SERPs" }
+							].map((stat, index) => (
+								<motion.div 
+									key={index}
+									initial={{ opacity: 0, scale: 0.8 }}
+									animate={statsInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+									transition={{ duration: 0.8, delay: index * 0.1 }}
+									className="text-center"
+								>
+									<div className="text-3xl font-bold text-blue-600 mb-2">{stat.value}</div>
+									<div className="text-gray-600">{stat.label}</div>
+								</motion.div>
+							))}
+						</div>
+					</motion.div>
+				</div>
 			</section>
 
 			{/* Final CTA Section */}
-			<section className="py-20 bg-gradient-to-br from-indigo-900 via-purple-900 to-blue-900">
-				<BrandContainer>
+			<section className="py-20 bg-blue-600">
+				<div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
 					<motion.div
-						initial="hidden"
-						whileInView="show"
-						variants={stagger}
-						className="text-center space-y-8"
+						initial={{ opacity: 0, y: 20 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.8 }}
+						className="space-y-8"
 					>
-						<motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-bold text-white">
-							Ready to Turbocharge Your SEO?
-						</motion.h2>
-						<motion.p variants={fadeUp} className="text-xl text-gray-300 max-w-2xl mx-auto">
-							Join thousands of websites already using AISEO Turbo to dominate search rankings.
-						</motion.p>
-						<motion.div variants={fadeUp} className="flex items-center justify-center gap-4">
+						<h2 className="text-4xl font-bold text-white">
+							Try all paid features during 7 days for free
+						</h2>
+						<div>
 							<a 
 								href="https://app.aiseoturbo.com/signup" 
-								className="inline-flex items-center rounded-full px-8 py-4 bg-white text-indigo-900 font-semibold text-lg hover:bg-gray-100 transition-colors"
+								className="inline-flex items-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-full hover:bg-gray-100 transition-colors shadow-lg"
 							>
-								Start Free Audit
+								Get access with no charges
 							</a>
-							<a 
-								href="/pricing" 
-								className="inline-flex items-center rounded-full px-8 py-4 border-2 border-white/30 text-white font-semibold text-lg hover:bg-white/10 transition-colors"
-							>
-								View Pricing
-							</a>
-						</motion.div>
+						</div>
 					</motion.div>
-				</BrandContainer>
+				</div>
 			</section>
 		</>
 	);
