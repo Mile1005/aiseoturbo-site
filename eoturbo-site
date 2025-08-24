@@ -1,0 +1,3 @@
+[33me2d3dcc[m fix: resolve SSR issues with static headers for about and api-solutions pages - Replace dynamic Header components with static versions for SSR compatibility - Add dynamic exports to all pages using client components - Update Next.js config for standalone output
+[33m9eb699e[m fix: resolve ESLint and TypeScript errors for deployment - Remove unused router imports - Fix unescaped apostrophes - Replace any types with proper interfaces - Convert API routes to Pages Router format - Remove framer-motion from static pages
+[33me120f21[m feat: add complete website pages - SEO audit, site crawler, backlinks, rank tracker, competitor analysis, keyword research, API solutions, about, and contact pages
