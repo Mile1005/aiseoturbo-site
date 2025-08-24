@@ -9,6 +9,7 @@ export default function HomePageClient() {
 	const featuresRef = useRef(null);
 	const statsRef = useRef(null);
 	const [searchQuery, setSearchQuery] = useState('');
+	const [activeTab, setActiveTab] = useState(0);
 	
 	const heroInView = useInView(heroRef, { once: true });
 	const featuresInView = useInView(featuresRef, { once: true });
@@ -109,127 +110,304 @@ export default function HomePageClient() {
 	];
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-			{/* Hero Section */}
-			<section ref={heroRef} className="relative overflow-hidden">
-				<div className="container mx-auto px-4 py-20">
+		<>
+			{/* Hero Section - Enhanced with Beautiful Backgrounds */}
+			<section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+				{/* Beautiful Background Elements */}
+				<div className="absolute inset-0">
+					{/* Gradient Background */}
+					<div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50" />
+					
+					{/* Animated Floating Shapes */}
+					<motion.div 
+						className="absolute top-20 left-20 w-32 h-32 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full blur-3xl opacity-20"
+						animate={{ 
+							x: [0, 100, 0],
+							y: [0, -50, 0],
+						}}
+						transition={{ 
+							duration: 20, 
+							repeat: Infinity, 
+							ease: "linear" 
+						}}
+					/>
+					<motion.div 
+						className="absolute bottom-20 right-20 w-24 h-24 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full blur-3xl opacity-20"
+						animate={{ 
+							x: [0, -80, 0],
+							y: [0, 60, 0],
+						}}
+						transition={{ 
+							duration: 25, 
+							repeat: Infinity, 
+							ease: "linear" 
+						}}
+					/>
+					<motion.div 
+						className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-blue-200 to-purple-200 rounded-full blur-3xl opacity-10"
+						animate={{ 
+							scale: [1, 1.2, 1],
+							opacity: [0.1, 0.2, 0.1],
+						}}
+						transition={{ 
+							duration: 15, 
+							repeat: Infinity, 
+							ease: "easeInOut" 
+						}}
+					/>
+					
+					{/* Subtle Grid Pattern */}
+					<div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(59,130,246,0.1)_1px,transparent_0)] bg-[length:24px_24px]" />
+				</div>
+
+				<div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
 					<motion.div
+						ref={heroRef}
 						initial={{ opacity: 0, y: 20 }}
-						animate={heroInView ? { opacity: 1, y: 0 } : {}}
+						animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
 						transition={{ duration: 0.8 }}
-						className="text-center max-w-4xl mx-auto"
+						className="space-y-8"
 					>
-						<h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6">
-							AI-Powered SEO Tools
-						</h1>
-						<p className="text-xl md:text-2xl text-gray-600 mb-8">
-							Boost your website&apos;s search rankings with our comprehensive suite of SEO tools
-						</p>
+						<motion.h1 
+							initial={{ opacity: 0, y: 20 }}
+							animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+							transition={{ duration: 0.8, delay: 0.2 }}
+							className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-gray-900 leading-tight"
+						>
+							Speed up{' '}
+							<span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+								search marketing
+							</span>{' '}
+							goals achievement
+						</motion.h1>
 						
-						{/* Search Bar */}
-						<div className="max-w-2xl mx-auto mb-12">
-							<div className="relative">
-								<input
-									type="text"
+						<motion.p 
+							initial={{ opacity: 0, y: 20 }}
+							animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+							transition={{ duration: 0.8, delay: 0.4 }}
+							className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
+						>
+							Start your analysis for free
+						</motion.p>
+						
+						{/* Enhanced Search Input with Working Button */}
+						<motion.div 
+							initial={{ opacity: 0, y: 20 }}
+							animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+							transition={{ duration: 0.8, delay: 0.6 }}
+							className="flex items-center justify-center max-w-2xl mx-auto"
+						>
+							<div className="relative w-full">
+								<input 
+									type="text" 
 									value={searchQuery}
 									onChange={(e) => setSearchQuery(e.target.value)}
 									onKeyPress={handleKeyPress}
-									placeholder="Enter your website URL to analyze..."
-									className="w-full px-6 py-4 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+									placeholder="Enter domain, keyword or URL here" 
+									className="w-full px-6 py-4 text-lg border-2 border-gray-200 rounded-full focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all shadow-lg"
 								/>
-								<button
+								<button 
 									onClick={handleSearch}
-									className="absolute right-2 top-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200"
+									className="absolute right-2 top-2 px-8 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-full hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
 								>
-									Analyze
+									Search
 								</button>
 							</div>
-						</div>
-					</motion.div>
-				</div>
-			</section>
+						</motion.div>
 
-			{/* Features Section */}
-			<section ref={featuresRef} className="py-20">
-				<div className="container mx-auto px-4">
-					<motion.div
-						initial={{ opacity: 0, y: 20 }}
-						animate={featuresInView ? { opacity: 1, y: 0 } : {}}
-						transition={{ duration: 0.8 }}
-						className="text-center mb-16"
-					>
-						<h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-							Comprehensive SEO Suite
-						</h2>
-						<p className="text-xl text-gray-600 max-w-3xl mx-auto">
-							Everything you need to dominate search rankings and outperform your competitors
-						</p>
-					</motion.div>
-
-					{/* Tools Grid */}
-					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-						{tools.map((tool, index) => (
-							<motion.div
-								key={tool.id}
-								initial={{ opacity: 0, y: 20 }}
-								animate={featuresInView ? { opacity: 1, y: 0 } : {}}
-								transition={{ duration: 0.8, delay: index * 0.1 }}
-								className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all duration-300"
-							>
-								<div className={`w-16 h-16 bg-gradient-to-r ${tool.gradient} rounded-xl flex items-center justify-center mb-6`}>
-									{tool.icon}
-								</div>
-								<h3 className="text-2xl font-bold text-gray-900 mb-4">{tool.title}</h3>
-								<p className="text-gray-600 mb-6">{tool.description}</p>
-								<ul className="space-y-3">
-									{tool.features.map((feature, featureIndex) => (
-										<li key={featureIndex} className="flex items-start">
-											<svg className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-												<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-											</svg>
-											<span className="text-gray-700">{feature}</span>
-										</li>
+						{/* Enhanced Trust Indicators */}
+						<motion.div 
+							initial={{ opacity: 0, y: 20 }}
+							animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+							transition={{ duration: 0.8, delay: 0.8 }}
+							className="flex items-center justify-center gap-8 text-sm text-gray-500"
+						>
+							<div className="flex items-center gap-2">
+								<div className="flex">
+									{[...Array(5)].map((_, i) => (
+										<svg key={i} className="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+											<path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+										</svg>
 									))}
-								</ul>
-							</motion.div>
-						))}
-					</div>
+								</div>
+								<span>Based on 600+ reviews</span>
+							</div>
+							<div className="flex items-center gap-4">
+								<div className="w-8 h-8 bg-gray-200 rounded flex items-center justify-center font-bold text-gray-600">G2</div>
+								<div className="w-8 h-8 bg-gray-200 rounded flex items-center justify-center font-bold text-gray-600">C</div>
+							</div>
+						</motion.div>
+					</motion.div>
 				</div>
 			</section>
 
-			{/* Stats Section */}
-			<section ref={statsRef} className="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
-				<div className="container mx-auto px-4">
+			{/* Interactive Tabbed Slider Section */}
+			<section className="relative py-20 bg-gradient-to-br from-gray-50 via-white to-blue-50">
+				{/* Background Pattern */}
+				<div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(59,130,246,0.05)_1px,transparent_0)] bg-[length:32px_32px]" />
+				
+				<div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 					<motion.div
+						ref={featuresRef}
 						initial={{ opacity: 0, y: 20 }}
-						animate={statsInView ? { opacity: 1, y: 0 } : {}}
+						animate={featuresInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
 						transition={{ duration: 0.8 }}
-						className="text-center text-white"
+						className="text-center space-y-16"
 					>
-						<h2 className="text-4xl md:text-5xl font-bold mb-16">
-							Trusted by SEO Professionals
-						</h2>
-						<div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-							<div>
-								<div className="text-4xl font-bold mb-2">10M+</div>
-								<div className="text-blue-100">Websites Analyzed</div>
+						<div className="space-y-4">
+							<h2 className="text-4xl font-bold text-gray-900">
+								Marketing tools to speed up SEO tasks
+							</h2>
+						</div>
+						
+						{/* Interactive Tabbed Slider */}
+						<div className="w-full">
+							{/* Tab Navigation */}
+							<div className="relative mb-12">
+								<div className="flex justify-center space-x-1 bg-white/80 backdrop-blur-sm rounded-2xl p-2 shadow-lg border border-gray-100">
+									{tools.map((tool, index) => (
+										<button
+											key={tool.id}
+											onClick={() => setActiveTab(index)}
+											className={`relative px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 ${
+												activeTab === index
+													? 'text-blue-600 opacity-100'
+													: 'text-gray-600 opacity-60 hover:opacity-80'
+											}`}
+										>
+											{tool.title}
+										</button>
+									))}
+									
+									{/* Animated Underline */}
+									<motion.div
+										className="absolute bottom-2 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"
+										initial={false}
+										animate={{
+											width: `${100 / tools.length}%`,
+											x: `${(activeTab * 100) / tools.length}%`,
+										}}
+										transition={{ duration: 0.3, ease: "easeInOut" }}
+									/>
+								</div>
 							</div>
-							<div>
-								<div className="text-4xl font-bold mb-2">500K+</div>
-								<div className="text-blue-100">Active Users</div>
-							</div>
-							<div>
-								<div className="text-4xl font-bold mb-2">99.9%</div>
-								<div className="text-blue-100">Uptime</div>
-							</div>
-							<div>
-								<div className="text-4xl font-bold mb-2">24/7</div>
-								<div className="text-blue-100">Support</div>
-							</div>
+
+							{/* Tab Content */}
+							<motion.div
+								key={activeTab}
+								initial={{ opacity: 0, y: 20 }}
+								animate={{ opacity: 1, y: 0 }}
+								transition={{ duration: 0.5 }}
+								className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 p-8"
+							>
+								<div className="flex items-start gap-6">
+									{/* Icon */}
+									<div className={`w-16 h-16 bg-gradient-to-r ${tools[activeTab].gradient} rounded-2xl flex items-center justify-center flex-shrink-0`}>
+										{tools[activeTab].icon}
+									</div>
+									
+									{/* Content */}
+									<div className="flex-1">
+										<h3 className="text-2xl font-bold text-gray-900 mb-4">{tools[activeTab].title}</h3>
+										<p className="text-gray-600 mb-6">{tools[activeTab].description}</p>
+										
+										<ul className="space-y-3">
+											{tools[activeTab].features.map((feature, i) => (
+												<li key={i} className="flex items-start gap-3">
+													<div className={`w-2 h-2 bg-gradient-to-r ${tools[activeTab].gradient} rounded-full mt-2 flex-shrink-0`}></div>
+													<span className="text-gray-600">{feature}</span>
+												</li>
+											))}
+										</ul>
+										
+										<div className="mt-8">
+											<a href="#" className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-full hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+												Get access with no charges →
+											</a>
+										</div>
+									</div>
+								</div>
+							</motion.div>
 						</div>
 					</motion.div>
 				</div>
 			</section>
-		</div>
+
+			{/* Enhanced Stats Section */}
+			<section className="relative py-20 bg-gradient-to-br from-white via-blue-50 to-purple-50">
+				{/* Background Pattern */}
+				<div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(147,51,234,0.05)_1px,transparent_0)] bg-[length:40px_40px]" />
+				
+				<div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+					<motion.div
+						ref={statsRef}
+						initial={{ opacity: 0, y: 20 }}
+						animate={statsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+						transition={{ duration: 0.8 }}
+						className="text-center space-y-12"
+					>
+						<div className="space-y-4">
+							<h2 className="text-4xl font-bold text-gray-900">
+								USE the right data
+							</h2>
+						</div>
+						
+						<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+							{[
+								{ value: "1.50B", label: "Domains" },
+								{ value: "8.62B", label: "Keywords" },
+								{ value: "529B", label: "Backlinks" },
+								{ value: "5.6B", label: "Keywords suggestions" },
+								{ value: "230", label: "Countries" },
+								{ value: "2.21B", label: "Google SERPs" }
+							].map((stat, index) => (
+								<motion.div 
+									key={index}
+									initial={{ opacity: 0, scale: 0.8 }}
+									animate={statsInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+									transition={{ duration: 0.8, delay: index * 0.1 }}
+									className="text-center group"
+								>
+									<div className="bg-white/60 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 hover:scale-105">
+										<div className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">{stat.value}</div>
+										<div className="text-gray-600">{stat.label}</div>
+									</div>
+								</motion.div>
+							))}
+						</div>
+					</motion.div>
+				</div>
+			</section>
+
+			{/* Enhanced Final CTA Section */}
+			<section className="relative py-20 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 overflow-hidden">
+				{/* Background Elements */}
+				<div className="absolute inset-0">
+					<div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.1)_0%,transparent_50%)]" />
+					<div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_70%_80%,rgba(255,255,255,0.1)_0%,transparent_50%)]" />
+				</div>
+				
+				<div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+					<motion.div
+						initial={{ opacity: 0, y: 20 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.8 }}
+						className="space-y-8"
+					>
+						<h2 className="text-4xl font-bold text-white">
+							Try all paid features during 7 days for free
+						</h2>
+						<div>
+							<a 
+								href="https://app.aiseoturbo.com/signup" 
+								className="inline-flex items-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-full hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+							>
+								Get access with no charges
+							</a>
+						</div>
+					</motion.div>
+				</div>
+			</section>
+		</>
 	);
 }
