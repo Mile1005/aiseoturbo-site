@@ -65,6 +65,7 @@ interface AuditResult {
   issues?: AuditIssue[];
   recommendations?: AuditRecommendation[];
   createdAt: string;
+  rawData?: RealAuditResult;
 }
 
 // Types for the real API response
@@ -82,11 +83,34 @@ interface RealAuditQuickWin {
 
 interface RealAuditScores {
   overall?: number;
+  performance?: number;
+  accessibility?: number;
+  seo?: number;
+  best_practices?: number;
+}
+
+interface RealAuditStats {
+  internal_links?: number;
+  external_links?: number;
+  images_count?: number;
+  images_size?: number;
+  scripts_count?: number;
+  scripts_size?: number;
+  text_size?: number;
+  text_rate?: number;
+}
+
+interface RealAuditHTags {
+  h1?: string[];
+  h2?: string[];
+  h3?: string[];
 }
 
 interface RealAuditResult {
   url?: string;
   scores?: RealAuditScores;
+  stats?: RealAuditStats;
+  h_tags?: RealAuditHTags;
   issues?: RealAuditIssue[];
   quick_wins?: RealAuditQuickWin[];
   fetched_at?: string;
@@ -117,25 +141,27 @@ export default function SeoAuditResultsPage() {
       
              // Handle the new API response format
        if (data.status === 'done' && data.result) {
-         // Transform the real audit result to match our interface
-         const realResult = data.result as RealAuditResult;
-         const transformedResult: AuditResult = {
-           id: auditId,
-           url: realResult.url || 'Unknown URL',
-           status: 'completed',
-           score: realResult.scores?.overall || 0,
-           issues: realResult.issues?.map((issue: RealAuditIssue, index: number) => ({
-             title: issue.title || `Issue ${index + 1}`,
-             description: issue.description || '',
-             severity: issue.severity || 'medium',
-             recommendation: issue.recommendation || ''
-           })) || [],
-           recommendations: realResult.quick_wins?.map((win: RealAuditQuickWin, index: number) => ({
-             title: win.title || `Recommendation ${index + 1}`,
-             description: win.description || ''
-           })) || [],
-           createdAt: realResult.fetched_at || new Date().toISOString()
-         };
+                   // Transform the real audit result to match our interface
+          const realResult = data.result as RealAuditResult;
+          const transformedResult: AuditResult = {
+            id: auditId,
+            url: realResult.url || 'Unknown URL',
+            status: 'completed',
+            score: realResult.scores?.overall || 0,
+            issues: realResult.issues?.map((issue: RealAuditIssue, index: number) => ({
+              title: issue.title || `Issue ${index + 1}`,
+              description: issue.description || '',
+              severity: issue.severity || 'medium',
+              recommendation: issue.recommendation || ''
+            })) || [],
+            recommendations: realResult.quick_wins?.map((win: RealAuditQuickWin, index: number) => ({
+              title: win.title || `Recommendation ${index + 1}`,
+              description: win.description || ''
+            })) || [],
+            createdAt: realResult.fetched_at || new Date().toISOString(),
+            // Add the raw data for detailed metrics
+            rawData: realResult
+          };
          setAuditResult(transformedResult);
       } else if (data.status === 'error') {
         setError(data.error || 'Audit failed');
@@ -207,7 +233,7 @@ export default function SeoAuditResultsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="max-w-4xl mx-auto"
+          className="max-w-6xl mx-auto"
         >
           {/* Header */}
           <div className="text-center mb-12">
@@ -217,29 +243,210 @@ export default function SeoAuditResultsPage() {
             <p className="text-xl text-gray-600">
               Analysis for {auditResult.url}
             </p>
+            <p className="text-sm text-gray-500 mt-2">
+              Report Generated: {new Date(auditResult.createdAt).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+              })}
+            </p>
           </div>
 
-          {/* Score Card */}
-          {auditResult.score && (
+          {/* Main Results Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+            {/* Left Column - Website Snapshot */}
+            <div className="lg:col-span-1">
+              <div className="bg-white rounded-2xl shadow-xl p-6">
+                <h2 className="text-xl font-semibold text-gray-900 mb-4">Website Snapshot</h2>
+                <div className="bg-gray-100 rounded-lg p-4 mb-4">
+                  <div className="text-sm text-gray-600 mb-2">Website Preview</div>
+                  <div className="bg-white rounded border p-3">
+                    <div className="text-sm font-medium text-gray-900 truncate">
+                      {auditResult.url}
+                    </div>
+                  </div>
+                </div>
+                <button className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                  Export PDF
+                </button>
+              </div>
+            </div>
+
+            {/* Right Column - Overall Score */}
+            <div className="lg:col-span-2">
+              <div className="bg-white rounded-2xl shadow-xl p-8">
+                <div className="text-center mb-6">
+                  <div className="text-6xl font-bold text-blue-600 mb-4">
+                    {auditResult.rawData?.scores?.overall || auditResult.score}/100
+                  </div>
+                  <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+                    On-Page Score
+                  </h2>
+                </div>
+
+                {/* Score Breakdown */}
+                {auditResult.rawData?.scores && (
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-green-600">
+                        {auditResult.rawData.scores.performance || 0}
+                      </div>
+                      <div className="text-sm text-gray-600">Performance</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-blue-600">
+                        {auditResult.rawData.scores.accessibility || 0}
+                      </div>
+                      <div className="text-sm text-gray-600">Accessibility</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-purple-600">
+                        {auditResult.rawData.scores.seo || 0}
+                      </div>
+                      <div className="text-sm text-gray-600">SEO</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-orange-600">
+                        {auditResult.rawData.scores.best_practices || 0}
+                      </div>
+                      <div className="text-sm text-gray-600">Best Practices</div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Onpage Results Section */}
+          {auditResult.rawData?.stats && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
               className="bg-white rounded-2xl shadow-xl p-8 mb-8"
             >
-              <div className="text-center">
-                <div className="text-6xl font-bold text-blue-600 mb-4">
-                  {auditResult.score}/100
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-semibold text-gray-900">Onpage Results</h2>
+                <div className="text-2xl font-bold text-blue-600">
+                  {auditResult.rawData.scores?.overall || auditResult.score}%
                 </div>
-                <h2 className="text-2xl font-semibold text-gray-900 mb-2">
-                  Overall SEO Score
-                </h2>
-                <p className="text-gray-600">
-                  {auditResult.score >= 80 ? "Excellent" : 
-                   auditResult.score >= 60 ? "Good" : 
-                   auditResult.score >= 40 ? "Fair" : "Needs Improvement"}
-                </p>
               </div>
+              
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-gray-900">
+                    {auditResult.rawData.stats.internal_links || 0}
+                  </div>
+                  <div className="text-sm text-gray-600">Internal Links</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-gray-900">
+                    {auditResult.rawData.stats.external_links || 0}
+                  </div>
+                  <div className="text-sm text-gray-600">External Links</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-gray-900">
+                    {auditResult.rawData.stats.images_count || 0}
+                  </div>
+                  <div className="text-sm text-gray-600">Number of Images</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-gray-900">
+                    {(auditResult.rawData.stats.images_size || 0).toLocaleString()}
+                  </div>
+                  <div className="text-sm text-gray-600">Images Size</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-gray-900">
+                    {auditResult.rawData.stats.scripts_count || 0}
+                  </div>
+                  <div className="text-sm text-gray-600">Scripts</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-gray-900">
+                    {(auditResult.rawData.stats.scripts_size || 0).toLocaleString()}
+                  </div>
+                  <div className="text-sm text-gray-600">Scripts Size</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-gray-900">
+                    {(auditResult.rawData.stats.text_size || 0).toLocaleString()}
+                  </div>
+                  <div className="text-sm text-gray-600">Plain Text Size</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-gray-900">
+                    {(auditResult.rawData.stats.text_rate || 0).toFixed(2)}
+                  </div>
+                  <div className="text-sm text-gray-600">Plain Text Rate</div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* H Tags Section */}
+          {auditResult.rawData?.h_tags && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="bg-white rounded-2xl shadow-xl p-8 mb-8"
+            >
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">H Tags</h2>
+              
+              {/* H1 Tags */}
+              {auditResult.rawData.h_tags.h1 && auditResult.rawData.h_tags.h1.length > 0 && (
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                    We found #{auditResult.rawData.h_tags.h1.length} H1 tags on this page.
+                  </h3>
+                  <div className="space-y-2">
+                    {auditResult.rawData.h_tags.h1.map((h1, index) => (
+                      <div key={index} className="bg-gray-50 rounded-lg p-3">
+                        <span className="text-sm font-medium text-gray-600">{index + 1}.</span>
+                        <span className="ml-2 text-gray-900">{h1}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* H2 Tags */}
+              {auditResult.rawData.h_tags.h2 && auditResult.rawData.h_tags.h2.length > 0 && (
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                    We found #{auditResult.rawData.h_tags.h2.length} H2 tags on this page.
+                  </h3>
+                  <div className="space-y-2">
+                    {auditResult.rawData.h_tags.h2.map((h2, index) => (
+                      <div key={index} className="bg-gray-50 rounded-lg p-3">
+                        <span className="text-sm font-medium text-gray-600">{index + 1}.</span>
+                        <span className="ml-2 text-gray-900">{h2}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* H3 Tags */}
+              {auditResult.rawData.h_tags.h3 && auditResult.rawData.h_tags.h3.length > 0 && (
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                    We found #{auditResult.rawData.h_tags.h3.length} H3 tags on this page.
+                  </h3>
+                  <div className="space-y-2">
+                    {auditResult.rawData.h_tags.h3.map((h3, index) => (
+                      <div key={index} className="bg-gray-50 rounded-lg p-3">
+                        <span className="text-sm font-medium text-gray-600">{index + 1}.</span>
+                        <span className="ml-2 text-gray-900">{h3}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </motion.div>
           )}
 
@@ -248,7 +455,7 @@ export default function SeoAuditResultsPage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
               className="bg-white rounded-2xl shadow-xl p-8 mb-8"
             >
               <h2 className="text-2xl font-semibold text-gray-900 mb-6">
@@ -282,16 +489,16 @@ export default function SeoAuditResultsPage() {
             </motion.div>
           )}
 
-          {/* Recommendations */}
+          {/* Quick Wins */}
           {auditResult.recommendations && auditResult.recommendations.length > 0 && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
               className="bg-white rounded-2xl shadow-xl p-8 mb-8"
             >
               <h2 className="text-2xl font-semibold text-gray-900 mb-6">
-                Recommendations
+                Quick Wins
               </h2>
               <div className="space-y-4">
                 {auditResult.recommendations.map((rec: AuditRecommendation, index: number) => (
@@ -317,7 +524,7 @@ export default function SeoAuditResultsPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
+            transition={{ duration: 0.8, delay: 1.0 }}
             className="text-center"
           >
             <button

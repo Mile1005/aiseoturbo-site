@@ -79,6 +79,7 @@ function isValidEmail(email: string): boolean {
 export default function SeoAuditPage() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
   const [formData, setFormData] = useState({
     pageUrl: "",
@@ -128,6 +129,7 @@ export default function SeoAuditPage() {
     }
 
     setIsSubmitting(true);
+    setIsAnalyzing(true);
 
     try {
       // Start the SEO audit
@@ -159,10 +161,78 @@ export default function SeoAuditPage() {
     } catch (error) {
       console.error("Audit error:", error);
       setErrors({ pageUrl: "Failed to start audit. Please try again." });
+      setIsAnalyzing(false);
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  // Loading/Analyzing screen
+  if (isAnalyzing) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+        <StaticHeader />
+        <div className="container mx-auto px-4 py-16">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Left Column - Website Snapshot */}
+              <div className="lg:col-span-1">
+                <div className="bg-white rounded-2xl shadow-xl p-6">
+                  <h2 className="text-xl font-semibold text-gray-900 mb-4">Website Snapshot</h2>
+                  <div className="bg-gray-100 rounded-lg p-4 mb-4">
+                    <div className="text-sm text-gray-600 mb-2">Website Preview</div>
+                    <div className="bg-white rounded border p-3">
+                      <div className="text-sm font-medium text-gray-900 truncate">
+                        {formData.pageUrl}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-blue-50 rounded-lg p-4">
+                    <div className="text-sm text-blue-600 font-medium">Analyzing website...</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column - Analysis Status */}
+              <div className="lg:col-span-2">
+                <div className="bg-white rounded-2xl shadow-xl p-8">
+                  <div className="text-center">
+                    <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-6"></div>
+                    <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+                      Hang on, we are analyzing your page...
+                    </h2>
+                    <p className="text-gray-600 mb-6">
+                      This may take a few minutes. Please do not close this window.
+                    </p>
+                    
+                    {/* Progress indicators */}
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-600">Fetching page content...</span>
+                        <div className="w-4 h-4 bg-green-500 rounded-full"></div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-600">Analyzing SEO elements...</span>
+                        <div className="w-4 h-4 bg-green-500 rounded-full"></div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-600">Checking performance...</span>
+                        <div className="w-4 h-4 bg-blue-500 rounded-full animate-pulse"></div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-600">Generating recommendations...</span>
+                        <div className="w-4 h-4 bg-gray-300 rounded-full"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
