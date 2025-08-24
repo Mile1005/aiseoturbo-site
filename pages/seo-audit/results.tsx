@@ -6,13 +6,27 @@ import { motion } from "framer-motion";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/Footer";
 
+export const dynamic = 'force-dynamic';
+
+interface AuditIssue {
+  title: string;
+  description: string;
+  severity: 'high' | 'medium' | 'low';
+  recommendation?: string;
+}
+
+interface AuditRecommendation {
+  title: string;
+  description: string;
+}
+
 interface AuditResult {
   id: string;
   url: string;
   status: string;
   score?: number;
-  issues?: any[];
-  recommendations?: any[];
+  issues?: AuditIssue[];
+  recommendations?: AuditRecommendation[];
   createdAt: string;
 }
 
@@ -152,7 +166,7 @@ export default function SeoAuditResultsPage() {
                 Issues Found ({auditResult.issues.length})
               </h2>
               <div className="space-y-4">
-                {auditResult.issues.map((issue: any, index: number) => (
+                                 {auditResult.issues.map((issue: AuditIssue, index: number) => (
                   <div key={index} className="border border-gray-200 rounded-lg p-4">
                     <div className="flex items-start gap-3">
                       <div className={`w-3 h-3 rounded-full mt-2 ${
@@ -191,7 +205,7 @@ export default function SeoAuditResultsPage() {
                 Recommendations
               </h2>
               <div className="space-y-4">
-                {auditResult.recommendations.map((rec: any, index: number) => (
+                                 {auditResult.recommendations.map((rec: AuditRecommendation, index: number) => (
                   <div key={index} className="border border-green-200 bg-green-50 rounded-lg p-4">
                     <div className="flex items-start gap-3">
                       <div className="w-3 h-3 bg-green-500 rounded-full mt-2"></div>

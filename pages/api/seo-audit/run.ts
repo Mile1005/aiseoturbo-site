@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextApiRequest, NextApiResponse } from 'next';
 import { z } from 'zod';
 import { addAuditJob } from '../../../lib/seo-audit/queue';
 import { dbHelpers } from '../../../lib/seo-audit/db';
@@ -20,10 +20,13 @@ const StartAuditRequest = z.object({
   }),
 });
 
-export async function POST(request: NextRequest) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
   try {
-    const body = await request.json();
-    const { url, keyword, options } = StartAuditRequest.parse(body);
+    const { url, keyword } = StartAuditRequest.parse(req.body);
 
     // Create audit record in database
     const auditRun = await dbHelpers.createRun({
@@ -48,23 +51,19 @@ export async function POST(request: NextRequest) {
       estimatedTime: '30-60 seconds',
     };
 
-    return NextResponse.json(response);
+    return res.status(200).json(response);
   } catch (error) {
     console.error('Start audit error:', error);
 
     if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { error: 'Invalid request data', details: error.issues },
-        { status: 400 }
+      return res.status(400).json(
+        { error: 'Invalid request data', details: error.issues }
       );
     }
 
-    return NextResponse.json(
-      {
-        error: 'Failed to start audit',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
-      { status: 500 }
-    );
+    return res.status(500).json({
+      error: 'Failed to start audit',
+      details: error instanceof Error ? error.message : 'Unknown error',
+    });
   }
 }

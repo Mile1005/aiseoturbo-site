@@ -1,23 +1,34 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextApiRequest, NextApiResponse } from 'next';
 import { dbHelpers } from '../../../lib/seo-audit/db';
 
-export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const id = searchParams.get('id');
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== 'GET') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
 
-    if (!id) {
-      return NextResponse.json({ error: 'Missing audit ID parameter' }, { status: 400 });
+  try {
+    const { id } = req.query;
+
+    if (!id || typeof id !== 'string') {
+      return res.status(400).json({ error: 'Missing audit ID parameter' });
     }
 
     // Get run status from database
     const run = await dbHelpers.getRun(id);
 
     if (!run) {
-      return NextResponse.json({ error: 'Audit not found' }, { status: 404 });
+      return res.status(404).json({ error: 'Audit not found' });
     }
 
-    const response: any = {
+    const response: {
+      id: string;
+      url: string;
+      status: string;
+      createdAt: Date;
+      updatedAt: Date;
+      result?: unknown;
+      error?: string;
+    } = {
       id: run.id,
       url: run.pageUrl,
       status: run.status,
@@ -35,16 +46,13 @@ export async function GET(request: NextRequest) {
       response.error = 'Audit failed';
     }
 
-    return NextResponse.json(response);
+    return res.status(200).json(response);
   } catch (error) {
     console.error('Get audit result error:', error);
 
-    return NextResponse.json(
-      {
-        error: 'Failed to get audit result',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      },
-      { status: 500 }
-    );
+    return res.status(500).json({
+      error: 'Failed to get audit result',
+      details: error instanceof Error ? error.message : 'Unknown error',
+    });
   }
 }

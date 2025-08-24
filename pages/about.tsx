@@ -1,7 +1,4 @@
-"use client";
-
 import React from "react";
-import { motion } from "framer-motion";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 
@@ -10,12 +7,7 @@ export default function AboutPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <Header />
       <div className="container mx-auto px-4 py-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="max-w-4xl mx-auto"
-        >
+        <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
               About AISEO Turbo
@@ -25,12 +17,7 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="bg-white rounded-2xl shadow-xl p-8 mb-8"
-          >
+          <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
             <h2 className="text-2xl font-semibold text-gray-900 mb-6">
               Our Mission
             </h2>
@@ -41,17 +28,12 @@ export default function AboutPage() {
             </p>
             <p className="text-gray-600">
               We combine cutting-edge artificial intelligence with deep SEO expertise to deliver insights that 
-              help you understand your website's performance, identify opportunities for improvement, and 
+              help you understand your website&apos;s performance, identify opportunities for improvement, and 
               implement strategies that drive real results.
             </p>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="bg-white rounded-2xl shadow-xl p-8 mb-8"
-          >
+          <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
             <h2 className="text-2xl font-semibold text-gray-900 mb-6">
               What We Offer
             </h2>
@@ -61,7 +43,7 @@ export default function AboutPage() {
                   Comprehensive SEO Audits
                 </h3>
                 <p className="text-gray-600">
-                  Get detailed analysis of your website's SEO performance with actionable recommendations.
+                  Get detailed analysis of your website&apos;s SEO performance with actionable recommendations.
                 </p>
               </div>
               
@@ -79,7 +61,7 @@ export default function AboutPage() {
                   Competitor Analysis
                 </h3>
                 <p className="text-gray-600">
-                  Understand your competitors' strategies and find opportunities to outperform them.
+                  Understand your competitors&apos; strategies and find opportunities to outperform them.
                 </p>
               </div>
               
@@ -110,14 +92,9 @@ export default function AboutPage() {
                 </p>
               </div>
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="bg-white rounded-2xl shadow-xl p-8 mb-8"
-          >
+          <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
             <h2 className="text-2xl font-semibold text-gray-900 mb-6">
               Why Choose AISEO Turbo?
             </h2>
@@ -154,28 +131,23 @@ export default function AboutPage() {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-            className="bg-white rounded-2xl shadow-xl p-8"
-          >
+          <div className="bg-white rounded-2xl shadow-xl p-8">
             <h2 className="text-2xl font-semibold text-gray-900 mb-6">
               Our Commitment
             </h2>
             <p className="text-gray-600 mb-4">
-              We're committed to providing you with the most accurate, up-to-date SEO insights and tools. 
+                             We&apos;re committed to providing you with the most accurate, up-to-date SEO insights and tools. 
               Our team continuously monitors search engine algorithm changes and updates our platform 
               to ensure you always have the latest best practices at your fingertips.
             </p>
             <p className="text-gray-600">
-              Whether you're a small business owner, a marketing professional, or an SEO specialist, 
+                             Whether you&apos;re a small business owner, a marketing professional, or an SEO specialist, 
               AISEO Turbo is here to help you achieve your search engine optimization goals.
             </p>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
       <Footer />
     </div>

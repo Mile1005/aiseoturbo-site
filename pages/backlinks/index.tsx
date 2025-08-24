@@ -1,17 +1,17 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/router";
 import { motion } from "framer-motion";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/Footer";
+
+export const dynamic = 'force-dynamic';
 
 interface FormErrors {
   domain?: string;
 }
 
 export default function BacklinksPage() {
-  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
   const [formData, setFormData] = useState({

@@ -6,6 +6,8 @@ import { motion } from "framer-motion";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/Footer";
 
+export const dynamic = 'force-dynamic';
+
 interface FormErrors {
   pageUrl?: string;
   email?: string;
@@ -182,7 +184,7 @@ export default function SeoAuditPage() {
                   <p className="mt-2 text-sm text-red-600">{errors.email}</p>
                 )}
                 <p className="mt-2 text-sm text-gray-500">
-                  We'll notify you when your audit is complete
+                  We&apos;ll notify you when your audit is complete
                 </p>
               </div>
 

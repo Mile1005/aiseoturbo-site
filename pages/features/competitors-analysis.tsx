@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/router";
 import { motion } from "framer-motion";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/Footer";
+
+export const dynamic = 'force-dynamic';
 
 interface FormErrors {
   domain?: string;
@@ -12,7 +13,6 @@ interface FormErrors {
 }
 
 export default function CompetitorAnalysisPage() {
-  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
   const [formData, setFormData] = useState({
@@ -155,9 +155,9 @@ export default function CompetitorAnalysisPage() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="mt-8 text-center"
           >
-            <p className="text-gray-600">
-              Discover your competitors' strategies, identify gaps, and find opportunities to outperform them
-            </p>
+                           <p className="text-gray-600">
+                 Discover your competitors&apos; strategies, identify gaps, and find opportunities to outperform them
+               </p>
           </motion.div>
         </motion.div>
       </div>

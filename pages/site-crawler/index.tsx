@@ -6,6 +6,8 @@ import { motion } from "framer-motion";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/Footer";
 
+export const dynamic = 'force-dynamic';
+
 interface FormErrors {
   startUrl?: string;
   maxPages?: string;
