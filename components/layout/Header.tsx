@@ -25,7 +25,7 @@ export default function Header() {
 		{
 			title: "SEO Audit",
 			description: "Analyze your website for SEO issues and get actionable recommendations",
-			href: "/seo-analyzer",
+			href: "/seo-audit",
 			icon: (
 				<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -65,6 +65,28 @@ export default function Header() {
 				</svg>
 			),
 			gradient: "from-orange-500 to-red-500"
+		},
+		{
+			title: "Rank Tracker",
+			description: "Track your keyword rankings over time",
+			href: "/rank-tracker",
+			icon: (
+				<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+				</svg>
+			),
+			gradient: "from-orange-500 to-red-500"
+		},
+		{
+			title: "Backlink Analysis",
+			description: "Analyze your backlink profile and opportunities",
+			href: "/backlinks",
+			icon: (
+				<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+				</svg>
+			),
+			gradient: "from-green-500 to-emerald-500"
 		},
 		{
 			title: "API & Data Solutions",
