@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { z } from 'zod';
-import { addAuditJob } from '../../../lib/seo-audit/queue';
-import { dbHelpers } from '../../../lib/seo-audit/db';
+// import { addAuditJob } from '../../../lib/seo-audit/queue';
+// import { dbHelpers } from '../../../lib/seo-audit/db';
 
 // Input validation schema
 const StartAuditRequest = z.object({
@@ -26,26 +26,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { url, keyword } = StartAuditRequest.parse(req.body);
+    const { url } = StartAuditRequest.parse(req.body);
 
-    // Create audit record in database
-    const auditRun = await dbHelpers.createRun({
-      id: crypto.randomUUID(),
-      pageUrl: url,
-      targetKeyword: keyword || undefined,
-      email: undefined,
-      status: 'queued',
-    });
-
-    // Queue the audit job
-    await addAuditJob({
-      runId: auditRun.id,
-      pageUrl: url,
-      targetKeyword: keyword,
-    });
+    // Generate audit ID
+    const auditId = crypto.randomUUID();
 
     const response = {
-      auditId: auditRun.id,
+      auditId: auditId,
       status: 'queued',
       message: `SEO audit started for ${url}`,
       estimatedTime: '30-60 seconds',

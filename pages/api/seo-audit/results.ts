@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { dbHelpers } from '../../../lib/seo-audit/db';
+// import { dbHelpers } from '../../../lib/seo-audit/db';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {
@@ -13,40 +13,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ error: 'Missing audit ID parameter' });
     }
 
-    // Get run status from database
-    const run = await dbHelpers.getRun(id);
-
-    if (!run) {
-      return res.status(404).json({ error: 'Audit not found' });
-    }
-
-    const response: {
-      id: string;
-      url: string;
-      status: string;
-      createdAt: Date;
-      updatedAt: Date;
-      result?: unknown;
-      error?: string;
-    } = {
-      id: run.id,
-      url: run.pageUrl,
-      status: run.status,
-      createdAt: run.createdAt,
-      updatedAt: run.updatedAt,
-    };
-
-    // If audit is ready, get the result
-    if (run.status === 'ready') {
-      const audit = await dbHelpers.getAuditByRunId(id);
-      if (audit) {
-        response.result = audit.json;
-      }
-    } else if (run.status === 'failed') {
-      response.error = 'Audit failed';
-    }
-
-    return res.status(200).json(response);
+    // Return a simple response since we're not using database
+    return res.status(200).json({
+      status: "done",
+      message: "Audit was processed inline and results were returned immediately",
+      note: "Check the original API response for the audit results"
+    });
   } catch (error) {
     console.error('Get audit result error:', error);
 

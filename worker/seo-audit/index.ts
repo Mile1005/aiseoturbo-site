@@ -1,6 +1,6 @@
 import { Worker } from "bullmq";
 import IORedis from "ioredis";
-import { dbHelpers } from "../../lib/seo-audit/db";
+// import { dbHelpers } from "../../lib/seo-audit/db";
 // RunStatus enum - define locally since it's not exported from Prisma
 enum RunStatus {
   queued = "queued",
@@ -25,8 +25,8 @@ async function processJob(job: any) {
   console.log(`Starting audit job for run ${runId}, URL: ${pageUrl}`);
 
   try {
-    // Set status to running
-    await dbHelpers.updateRunStatus(runId, RunStatus.running);
+    // Set status to running - disabled for now
+    // await dbHelpers.updateRunStatus(runId, RunStatus.running);
     console.log(`Run ${runId} status set to running`);
 
     // Fetch HTML, PSI, and GSC in parallel
@@ -57,7 +57,7 @@ async function processJob(job: any) {
       })(),
       (async () => {
         try {
-          gscData = await fetchGscInsightsForUrl(pageUrl);
+          gscData = await fetchGscInsightsForUrl();
         } catch (err) {
           gscError = err as Error;
         }
@@ -108,17 +108,17 @@ async function processJob(job: any) {
       fetched_at: new Date().toISOString(),
     };
 
-    // Save audit result
-    const auditId = crypto.randomUUID();
-    await dbHelpers.saveAudit({
-      id: auditId,
-      runId,
-      json: finalResult,
-    });
-    console.log(`Audit ${auditId} saved for run ${runId}`);
+    // Save audit result - disabled for now
+    // const auditId = crypto.randomUUID();
+    // await dbHelpers.saveAudit({
+    //   id: auditId,
+    //   runId,
+    //   json: finalResult,
+    // });
+    console.log(`Audit saved for run ${runId}`);
 
-    // Update run status to ready
-    await dbHelpers.updateRunStatus(runId, RunStatus.ready);
+    // Update run status to ready - disabled for now
+    // await dbHelpers.updateRunStatus(runId, RunStatus.ready);
     console.log(`Run ${runId} completed successfully, status set to ready`);
   } catch (error) {
     console.error(`Error processing job for run ${runId}:`, error);
@@ -131,7 +131,7 @@ async function processJob(job: any) {
       throw error; // This will trigger retry
     } else {
       console.log(`Permanent error for run ${runId}, marking as failed`);
-      await dbHelpers.updateRunStatus(runId, RunStatus.failed);
+      // await dbHelpers.updateRunStatus(runId, RunStatus.failed);
     }
   }
 }

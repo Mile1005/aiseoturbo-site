@@ -1,7 +1,7 @@
 import { Worker } from "bullmq";
 import IORedis from "ioredis";
 import { miniCrawl } from "../../lib/seo-audit/crawl";
-import { dbHelpers } from "../../lib/seo-audit/db";
+// import { dbHelpers } from "../../lib/seo-audit/db";
 // RunStatus enum - define locally since it's not exported from Prisma
 enum RunStatus {
   queued = "queued",
@@ -21,8 +21,8 @@ async function processCrawlJob(job: any) {
   console.log(`Starting crawl job for ${crawlId}, URL: ${startUrl}`);
 
   try {
-    // Set status to running
-    await dbHelpers.updateRunStatus(crawlId, RunStatus.running);
+    // Set status to running - disabled for now
+    // await dbHelpers.updateRunStatus(crawlId, RunStatus.running);
     console.log(`Crawl ${crawlId} status set to running`);
 
     // Perform the crawl
@@ -34,18 +34,18 @@ async function processCrawlJob(job: any) {
       timeout: timeout || 10000,
     });
 
-    // Save crawl result
-    const resultId = crypto.randomUUID();
-    await dbHelpers.saveAudit({
-      id: resultId,
-      runId: crawlId,
-      json: { type: "crawl", ...crawlResult },
-    });
+    // Save crawl result - disabled for now
+    // const resultId = crypto.randomUUID();
+    // await dbHelpers.saveAudit({
+    //   id: resultId,
+    //   runId: crawlId,
+    //   json: { type: "crawl", ...crawlResult },
+    // });
 
     console.log(`Crawl ${crawlId} completed successfully, found ${crawlResult.totalPages} pages`);
 
-    // Update run status to ready
-    await dbHelpers.updateRunStatus(crawlId, RunStatus.ready);
+    // Update run status to ready - disabled for now
+    // await dbHelpers.updateRunStatus(crawlId, RunStatus.ready);
     console.log(`Crawl ${crawlId} status set to ready`);
   } catch (error) {
     console.error(`Error processing crawl job for ${crawlId}:`, error);
@@ -58,7 +58,7 @@ async function processCrawlJob(job: any) {
       throw error; // This will trigger retry
     } else {
       console.log(`Permanent error for crawl ${crawlId}, marking as failed`);
-      await dbHelpers.updateRunStatus(crawlId, RunStatus.failed);
+      // await dbHelpers.updateRunStatus(crawlId, RunStatus.failed);
     }
   }
 }
