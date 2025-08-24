@@ -31,3 +31,12 @@ body {
     text-wrap: balance;
   }
 }
+
+/* Ensure input text is always visible */
+input, textarea, select {
+  color: #111827 !important; /* text-gray-900 */
+}
+
+input::placeholder, textarea::placeholder {
+  color: #6b7280 !important; /* text-gray-500 */
+}
