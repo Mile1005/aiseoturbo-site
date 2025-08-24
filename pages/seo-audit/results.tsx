@@ -67,6 +67,31 @@ interface AuditResult {
   createdAt: string;
 }
 
+// Types for the real API response
+interface RealAuditIssue {
+  title?: string;
+  description?: string;
+  severity?: 'high' | 'medium' | 'low';
+  recommendation?: string;
+}
+
+interface RealAuditQuickWin {
+  title?: string;
+  description?: string;
+}
+
+interface RealAuditScores {
+  overall?: number;
+}
+
+interface RealAuditResult {
+  url?: string;
+  scores?: RealAuditScores;
+  issues?: RealAuditIssue[];
+  quick_wins?: RealAuditQuickWin[];
+  fetched_at?: string;
+}
+
 export default function SeoAuditResultsPage() {
   const router = useRouter();
   const [auditResult, setAuditResult] = useState<AuditResult | null>(null);
@@ -90,27 +115,28 @@ export default function SeoAuditResultsPage() {
 
       const data = await response.json();
       
-      // Handle the new API response format
-      if (data.status === 'done' && data.result) {
-        // Transform the real audit result to match our interface
-        const transformedResult: AuditResult = {
-          id: auditId,
-          url: data.result.url || 'Unknown URL',
-          status: 'completed',
-          score: data.result.scores?.overall || 0,
-          issues: data.result.issues?.map((issue: any, index: number) => ({
-            title: issue.title || `Issue ${index + 1}`,
-            description: issue.description || '',
-            severity: issue.severity || 'medium',
-            recommendation: issue.recommendation || ''
-          })) || [],
-          recommendations: data.result.quick_wins?.map((win: any, index: number) => ({
-            title: win.title || `Recommendation ${index + 1}`,
-            description: win.description || ''
-          })) || [],
-          createdAt: data.result.fetched_at || new Date().toISOString()
-        };
-        setAuditResult(transformedResult);
+             // Handle the new API response format
+       if (data.status === 'done' && data.result) {
+         // Transform the real audit result to match our interface
+         const realResult = data.result as RealAuditResult;
+         const transformedResult: AuditResult = {
+           id: auditId,
+           url: realResult.url || 'Unknown URL',
+           status: 'completed',
+           score: realResult.scores?.overall || 0,
+           issues: realResult.issues?.map((issue: RealAuditIssue, index: number) => ({
+             title: issue.title || `Issue ${index + 1}`,
+             description: issue.description || '',
+             severity: issue.severity || 'medium',
+             recommendation: issue.recommendation || ''
+           })) || [],
+           recommendations: realResult.quick_wins?.map((win: RealAuditQuickWin, index: number) => ({
+             title: win.title || `Recommendation ${index + 1}`,
+             description: win.description || ''
+           })) || [],
+           createdAt: realResult.fetched_at || new Date().toISOString()
+         };
+         setAuditResult(transformedResult);
       } else if (data.status === 'error') {
         setError(data.error || 'Audit failed');
       } else {
