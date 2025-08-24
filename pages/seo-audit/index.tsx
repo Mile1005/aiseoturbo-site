@@ -149,8 +149,13 @@ export default function SeoAuditPage() {
 
       const data = await response.json();
       
-      // Redirect to results page
-      router.push(`/seo-audit/results?id=${data.auditId}`);
+      // If audit is ready immediately (inline processing), redirect to results
+      if (data.status === 'ready' && data.result) {
+        router.push(`/seo-audit/results?id=${data.auditId}&inline=true`);
+      } else {
+        // If audit is queued, redirect to results page for polling
+        router.push(`/seo-audit/results?id=${data.auditId}`);
+      }
     } catch (error) {
       console.error("Audit error:", error);
       setErrors({ pageUrl: "Failed to start audit. Please try again." });
