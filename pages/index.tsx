@@ -1,24 +1,24 @@
 import React from 'react';
-import dynamic from 'next/dynamic';
+import Link from 'next/link';
 
-// Dynamically import the HomePageClient to avoid SSR issues
-const HomePageClient = dynamic(() => import('../components/HomePageClient'), {
-  ssr: false,
-  loading: () => <HomePageSkeleton />
-});
+export const dynamic = 'force-dynamic';
 
-// Static skeleton for the homepage that matches the design
-function HomePageSkeleton() {
+export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      {/* Hero Section */}
+    <>
+      {/* Hero Section - Enhanced with Beautiful Backgrounds */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Elements */}
+        {/* Beautiful Background Elements */}
         <div className="absolute inset-0">
+          {/* Gradient Background */}
           <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50" />
+          
+          {/* Animated Floating Shapes */}
           <div className="absolute top-20 left-20 w-32 h-32 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full blur-3xl opacity-20" />
           <div className="absolute bottom-20 right-20 w-24 h-24 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full blur-3xl opacity-20" />
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-blue-200 to-purple-200 rounded-full blur-3xl opacity-10" />
+          
+          {/* Subtle Grid Pattern */}
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(59,130,246,0.1)_1px,transparent_0)] bg-[length:24px_24px]" />
         </div>
 
@@ -36,7 +36,7 @@ function HomePageSkeleton() {
               Start your analysis for free
             </p>
             
-            {/* Search Input */}
+            {/* Enhanced Search Input with Working Button */}
             <div className="flex items-center justify-center max-w-2xl mx-auto">
               <div className="relative w-full">
                 <input 
@@ -44,13 +44,16 @@ function HomePageSkeleton() {
                   placeholder="Enter domain, keyword or URL here" 
                   className="w-full px-6 py-4 text-lg border-2 border-gray-200 rounded-full focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all shadow-lg"
                 />
-                <button className="absolute right-2 top-2 px-8 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-full hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+                <Link 
+                  href="/seo-audit"
+                  className="absolute right-2 top-2 px-8 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-full hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                >
                   Search
-                </button>
+                </Link>
               </div>
             </div>
 
-            {/* Trust Indicators */}
+            {/* Enhanced Trust Indicators */}
             <div className="flex items-center justify-center gap-8 text-sm text-gray-500">
               <div className="flex items-center gap-2">
                 <div className="flex">
@@ -71,8 +74,9 @@ function HomePageSkeleton() {
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* Interactive Tabbed Slider Section */}
       <section className="relative py-20 bg-gradient-to-br from-gray-50 via-white to-blue-50">
+        {/* Background Pattern */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(59,130,246,0.05)_1px,transparent_0)] bg-[length:32px_32px]" />
         
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -86,12 +90,14 @@ function HomePageSkeleton() {
             {/* Tab Content */}
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 p-8">
               <div className="flex items-start gap-6">
+                {/* Icon */}
                 <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-2xl flex items-center justify-center flex-shrink-0">
                   <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                   </svg>
                 </div>
                 
+                {/* Content */}
                 <div className="flex-1">
                   <h3 className="text-2xl font-bold text-gray-900 mb-4">Competitors analysis</h3>
                   <p className="text-gray-600 mb-6">Find out who your real search competitors are</p>
@@ -112,9 +118,9 @@ function HomePageSkeleton() {
                   </ul>
                   
                   <div className="mt-8">
-                    <a href="#" className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-full hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+                    <Link href="/features/competitors-analysis" className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-full hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
                       Get access with no charges →
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -123,8 +129,9 @@ function HomePageSkeleton() {
         </div>
       </section>
 
-      {/* Stats Section */}
+      {/* Enhanced Stats Section */}
       <section className="relative py-20 bg-gradient-to-br from-white via-blue-50 to-purple-50">
+        {/* Background Pattern */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(147,51,234,0.05)_1px,transparent_0)] bg-[length:40px_40px]" />
         
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -156,8 +163,9 @@ function HomePageSkeleton() {
         </div>
       </section>
 
-      {/* Final CTA Section */}
+      {/* Enhanced Final CTA Section */}
       <section className="relative py-20 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 overflow-hidden">
+        {/* Background Elements */}
         <div className="absolute inset-0">
           <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.1)_0%,transparent_50%)]" />
           <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_70%_80%,rgba(255,255,255,0.1)_0%,transparent_50%)]" />
@@ -179,10 +187,6 @@ function HomePageSkeleton() {
           </div>
         </div>
       </section>
-    </div>
+    </>
   );
-}
-
-export default function HomePage() {
-  return <HomePageClient />;
 }
