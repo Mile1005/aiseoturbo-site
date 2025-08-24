@@ -67,9 +67,11 @@ function SiteCrawlerContent() {
 
   // Pre-fill URL from query parameters
   useEffect(() => {
-    const urlParam = searchParams.get('url');
-    if (urlParam) {
-      setUrl(urlParam);
+    if (searchParams) {
+      const urlParam = searchParams.get('url');
+      if (urlParam) {
+        setUrl(urlParam);
+      }
     }
   }, [searchParams]);
 
