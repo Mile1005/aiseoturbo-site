@@ -68,7 +68,7 @@ interface AuditResult {
   rawData?: RealAuditResult;
 }
 
-// Types for the real API response
+// Types for the comprehensive API response
 interface RealAuditIssue {
   title?: string;
   description?: string;
@@ -98,6 +98,8 @@ interface RealAuditStats {
   scripts_size?: number;
   text_size?: number;
   text_rate?: number;
+  word_count?: number;
+  reading_time_min?: number;
 }
 
 interface RealAuditHTags {
@@ -106,11 +108,53 @@ interface RealAuditHTags {
   h3?: string[];
 }
 
+interface RealAuditSocialMeta {
+  og_title?: string | null;
+  og_url?: string | null;
+  og_description?: string | null;
+  og_image?: string | null;
+  twitter_card?: string | null;
+  twitter_title?: string | null;
+  twitter_description?: string | null;
+}
+
+interface RealAuditAccessibility {
+  passed_checks?: string[];
+  failed_checks?: string[];
+}
+
+interface RealAuditIndexability {
+  passed_checks?: string[];
+  failed_checks?: string[];
+}
+
+interface RealAuditSEOChecks {
+  passed_checks?: string[];
+  failed_checks?: string[];
+}
+
+interface RealAuditPerformanceMetrics {
+  first_contentful_paint?: number;
+  largest_contentful_paint?: number;
+  total_blocking_time?: number;
+  cumulative_layout_shift?: number;
+  speed_index?: number;
+  time_to_interactive?: number;
+  max_potential_first_input_delay?: number;
+}
+
 interface RealAuditResult {
   url?: string;
   scores?: RealAuditScores;
   stats?: RealAuditStats;
   h_tags?: RealAuditHTags;
+  social_meta?: RealAuditSocialMeta;
+  accessibility?: RealAuditAccessibility;
+  indexability?: RealAuditIndexability;
+  seo_checks?: RealAuditSEOChecks;
+  performance_metrics?: RealAuditPerformanceMetrics;
+  performance_opportunities?: string[];
+  performance_diagnostics?: string[];
   issues?: RealAuditIssue[];
   quick_wins?: RealAuditQuickWin[];
   fetched_at?: string;
@@ -139,30 +183,30 @@ export default function SeoAuditResultsPage() {
 
       const data = await response.json();
       
-             // Handle the new API response format
-       if (data.status === 'done' && data.result) {
-                   // Transform the real audit result to match our interface
-          const realResult = data.result as RealAuditResult;
-          const transformedResult: AuditResult = {
-            id: auditId,
-            url: realResult.url || 'Unknown URL',
-            status: 'completed',
-            score: realResult.scores?.overall || 0,
-            issues: realResult.issues?.map((issue: RealAuditIssue, index: number) => ({
-              title: issue.title || `Issue ${index + 1}`,
-              description: issue.description || '',
-              severity: issue.severity || 'medium',
-              recommendation: issue.recommendation || ''
-            })) || [],
-            recommendations: realResult.quick_wins?.map((win: RealAuditQuickWin, index: number) => ({
-              title: win.title || `Recommendation ${index + 1}`,
-              description: win.description || ''
-            })) || [],
-            createdAt: realResult.fetched_at || new Date().toISOString(),
-            // Add the raw data for detailed metrics
-            rawData: realResult
-          };
-         setAuditResult(transformedResult);
+      // Handle the comprehensive API response format
+      if (data.status === 'done' && data.result) {
+        // Transform the real audit result to match our interface
+        const realResult = data.result as RealAuditResult;
+        const transformedResult: AuditResult = {
+          id: auditId,
+          url: realResult.url || 'Unknown URL',
+          status: 'completed',
+          score: realResult.scores?.overall || 0,
+          issues: realResult.issues?.map((issue: RealAuditIssue, index: number) => ({
+            title: issue.title || `Issue ${index + 1}`,
+            description: issue.description || '',
+            severity: issue.severity || 'medium',
+            recommendation: issue.recommendation || ''
+          })) || [],
+          recommendations: realResult.quick_wins?.map((win: RealAuditQuickWin, index: number) => ({
+            title: win.title || `Recommendation ${index + 1}`,
+            description: win.description || ''
+          })) || [],
+          createdAt: realResult.fetched_at || new Date().toISOString(),
+          // Add the raw data for detailed metrics
+          rawData: realResult
+        };
+        setAuditResult(transformedResult);
       } else if (data.status === 'error') {
         setError(data.error || 'Audit failed');
       } else {
@@ -233,12 +277,12 @@ export default function SeoAuditResultsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="max-w-6xl mx-auto"
+          className="max-w-7xl mx-auto"
         >
           {/* Header */}
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              SEO Audit Results
+              Comprehensive SEO Audit Results
             </h1>
             <p className="text-xl text-gray-600">
               Analysis for {auditResult.url}
@@ -282,7 +326,7 @@ export default function SeoAuditResultsPage() {
                     {auditResult.rawData?.scores?.overall || auditResult.score}/100
                   </div>
                   <h2 className="text-2xl font-semibold text-gray-900 mb-2">
-                    On-Page Score
+                    Overall Score
                   </h2>
                 </div>
 
@@ -319,7 +363,7 @@ export default function SeoAuditResultsPage() {
             </div>
           </div>
 
-          {/* Onpage Results Section */}
+          {/* Detailed Statistics */}
           {auditResult.rawData?.stats && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -328,13 +372,13 @@ export default function SeoAuditResultsPage() {
               className="bg-white rounded-2xl shadow-xl p-8 mb-8"
             >
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-semibold text-gray-900">Onpage Results</h2>
+                <h2 className="text-2xl font-semibold text-gray-900">Page Statistics</h2>
                 <div className="text-2xl font-bold text-blue-600">
                   {auditResult.rawData.scores?.overall || auditResult.score}%
                 </div>
               </div>
               
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-gray-900">
                     {auditResult.rawData.stats.internal_links || 0}
@@ -351,38 +395,246 @@ export default function SeoAuditResultsPage() {
                   <div className="text-2xl font-bold text-gray-900">
                     {auditResult.rawData.stats.images_count || 0}
                   </div>
-                  <div className="text-sm text-gray-600">Number of Images</div>
+                  <div className="text-sm text-gray-600">Images</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-gray-900">
-                    {(auditResult.rawData.stats.images_size || 0).toLocaleString()}
+                    {auditResult.rawData.stats.word_count || 0}
                   </div>
-                  <div className="text-sm text-gray-600">Images Size</div>
+                  <div className="text-sm text-gray-600">Word Count</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-gray-900">
-                    {auditResult.rawData.stats.scripts_count || 0}
+                    {auditResult.rawData.stats.reading_time_min || 0}m
                   </div>
-                  <div className="text-sm text-gray-600">Scripts</div>
+                  <div className="text-sm text-gray-600">Reading Time</div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Social Media Meta Tags */}
+          {auditResult.rawData?.social_meta && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="bg-white rounded-2xl shadow-xl p-8 mb-8"
+            >
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Social Media Meta Tags</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-3">Open Graph</h3>
+                  <div className="space-y-2">
+                    <div>
+                      <span className="text-sm font-medium text-gray-600">Title:</span>
+                      <p className="text-sm text-gray-900">{auditResult.rawData.social_meta.og_title || 'Not set'}</p>
+                    </div>
+                    <div>
+                      <span className="text-sm font-medium text-gray-600">URL:</span>
+                      <p className="text-sm text-gray-900">{auditResult.rawData.social_meta.og_url || 'Not set'}</p>
+                    </div>
+                    <div>
+                      <span className="text-sm font-medium text-gray-600">Description:</span>
+                      <p className="text-sm text-gray-900">{auditResult.rawData.social_meta.og_description || 'Not set'}</p>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-3">Twitter</h3>
+                  <div className="space-y-2">
+                    <div>
+                      <span className="text-sm font-medium text-gray-600">Card Type:</span>
+                      <p className="text-sm text-gray-900">{auditResult.rawData.social_meta.twitter_card || 'Not set'}</p>
+                    </div>
+                    <div>
+                      <span className="text-sm font-medium text-gray-600">Title:</span>
+                      <p className="text-sm text-gray-900">{auditResult.rawData.social_meta.twitter_title || 'Not set'}</p>
+                    </div>
+                    <div>
+                      <span className="text-sm font-medium text-gray-600">Description:</span>
+                      <p className="text-sm text-gray-900">{auditResult.rawData.social_meta.twitter_description || 'Not set'}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Accessibility Checks */}
+          {auditResult.rawData?.accessibility && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="bg-white rounded-2xl shadow-xl p-8 mb-8"
+            >
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Accessibility Checks</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <h3 className="text-lg font-semibold text-green-600 mb-3">
+                    Passed Checks ({auditResult.rawData.accessibility.passed_checks?.length || 0})
+                  </h3>
+                  <div className="space-y-2">
+                    {auditResult.rawData.accessibility.passed_checks?.map((check, index) => (
+                      <div key={index} className="flex items-center">
+                        <div className="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
+                        <span className="text-sm text-gray-900">{check}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-red-600 mb-3">
+                    Failed Checks ({auditResult.rawData.accessibility.failed_checks?.length || 0})
+                  </h3>
+                  <div className="space-y-2">
+                    {auditResult.rawData.accessibility.failed_checks?.map((check, index) => (
+                      <div key={index} className="flex items-center">
+                        <div className="w-3 h-3 bg-red-500 rounded-full mr-3"></div>
+                        <span className="text-sm text-gray-900">{check}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Indexability Checks */}
+          {auditResult.rawData?.indexability && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="bg-white rounded-2xl shadow-xl p-8 mb-8"
+            >
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Indexability Checks</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <h3 className="text-lg font-semibold text-green-600 mb-3">
+                    Passed Checks ({auditResult.rawData.indexability.passed_checks?.length || 0})
+                  </h3>
+                  <div className="space-y-2">
+                    {auditResult.rawData.indexability.passed_checks?.map((check, index) => (
+                      <div key={index} className="flex items-center">
+                        <div className="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
+                        <span className="text-sm text-gray-900">{check}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-red-600 mb-3">
+                    Failed Checks ({auditResult.rawData.indexability.failed_checks?.length || 0})
+                  </h3>
+                  <div className="space-y-2">
+                    {auditResult.rawData.indexability.failed_checks?.map((check, index) => (
+                      <div key={index} className="flex items-center">
+                        <div className="w-3 h-3 bg-red-500 rounded-full mr-3"></div>
+                        <span className="text-sm text-gray-900">{check}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* SEO Checks */}
+          {auditResult.rawData?.seo_checks && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="bg-white rounded-2xl shadow-xl p-8 mb-8"
+            >
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">SEO Checks</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <h3 className="text-lg font-semibold text-green-600 mb-3">
+                    Passed Checks ({auditResult.rawData.seo_checks.passed_checks?.length || 0})
+                  </h3>
+                  <div className="space-y-2">
+                    {auditResult.rawData.seo_checks.passed_checks?.map((check, index) => (
+                      <div key={index} className="flex items-center">
+                        <div className="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
+                        <span className="text-sm text-gray-900">{check}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-red-600 mb-3">
+                    Failed Checks ({auditResult.rawData.seo_checks.failed_checks?.length || 0})
+                  </h3>
+                  <div className="space-y-2">
+                    {auditResult.rawData.seo_checks.failed_checks?.map((check, index) => (
+                      <div key={index} className="flex items-center">
+                        <div className="w-3 h-3 bg-red-500 rounded-full mr-3"></div>
+                        <span className="text-sm text-gray-900">{check}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Performance Metrics */}
+          {auditResult.rawData?.performance_metrics && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+              className="bg-white rounded-2xl shadow-xl p-8 mb-8"
+            >
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Performance Metrics</h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-blue-600">
+                    {auditResult.rawData.performance_metrics.first_contentful_paint}s
+                  </div>
+                  <div className="text-sm text-gray-600">First Contentful Paint</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-900">
-                    {(auditResult.rawData.stats.scripts_size || 0).toLocaleString()}
+                  <div className="text-2xl font-bold text-green-600">
+                    {auditResult.rawData.performance_metrics.largest_contentful_paint}s
                   </div>
-                  <div className="text-sm text-gray-600">Scripts Size</div>
+                  <div className="text-sm text-gray-600">Largest Contentful Paint</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-900">
-                    {(auditResult.rawData.stats.text_size || 0).toLocaleString()}
+                  <div className="text-2xl font-bold text-orange-600">
+                    {auditResult.rawData.performance_metrics.total_blocking_time}ms
                   </div>
-                  <div className="text-sm text-gray-600">Plain Text Size</div>
+                  <div className="text-sm text-gray-600">Total Blocking Time</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-900">
-                    {(auditResult.rawData.stats.text_rate || 0).toFixed(2)}
+                  <div className="text-2xl font-bold text-purple-600">
+                    {auditResult.rawData.performance_metrics.cumulative_layout_shift}
                   </div>
-                  <div className="text-sm text-gray-600">Plain Text Rate</div>
+                  <div className="text-sm text-gray-600">Cumulative Layout Shift</div>
                 </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Performance Opportunities */}
+          {auditResult.rawData?.performance_opportunities && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+              className="bg-white rounded-2xl shadow-xl p-8 mb-8"
+            >
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Performance Opportunities</h2>
+              <div className="space-y-3">
+                {auditResult.rawData.performance_opportunities.map((opportunity, index) => (
+                  <div key={index} className="flex items-center p-3 bg-yellow-50 rounded-lg">
+                    <div className="w-3 h-3 bg-yellow-500 rounded-full mr-3"></div>
+                    <span className="text-sm text-gray-900">{opportunity}</span>
+                  </div>
+                ))}
               </div>
             </motion.div>
           )}
@@ -392,10 +644,10 @@ export default function SeoAuditResultsPage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              transition={{ duration: 0.8, delay: 0.9 }}
               className="bg-white rounded-2xl shadow-xl p-8 mb-8"
             >
-              <h2 className="text-2xl font-semibold text-gray-900 mb-6">H Tags</h2>
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">H Tags Analysis</h2>
               
               {/* H1 Tags */}
               {auditResult.rawData.h_tags.h1 && auditResult.rawData.h_tags.h1.length > 0 && (
@@ -455,7 +707,7 @@ export default function SeoAuditResultsPage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
+              transition={{ duration: 0.8, delay: 1.0 }}
               className="bg-white rounded-2xl shadow-xl p-8 mb-8"
             >
               <h2 className="text-2xl font-semibold text-gray-900 mb-6">
@@ -494,7 +746,7 @@ export default function SeoAuditResultsPage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
+              transition={{ duration: 0.8, delay: 1.1 }}
               className="bg-white rounded-2xl shadow-xl p-8 mb-8"
             >
               <h2 className="text-2xl font-semibold text-gray-900 mb-6">
@@ -524,7 +776,7 @@ export default function SeoAuditResultsPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.0 }}
+            transition={{ duration: 0.8, delay: 1.2 }}
             className="text-center"
           >
             <button
