@@ -3,10 +3,47 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { motion } from "framer-motion";
-import Header from "../../components/layout/Header";
+import Link from 'next/link';
 import Footer from "../../components/layout/Footer";
 
 export const dynamic = 'force-dynamic';
+
+// Static Header component for this page
+function StaticHeader() {
+  return (
+    <header className="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <div className="flex items-center">
+            <Link href="/" className="text-2xl font-bold text-gray-900">
+              AISEO Turbo
+            </Link>
+          </div>
+          <nav className="hidden md:flex space-x-8">
+            <Link href="/seo-audit" className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+              SEO Audit
+            </Link>
+            <Link href="/site-crawler" className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+              Site Crawler
+            </Link>
+            <Link href="/backlinks" className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+              Backlinks
+            </Link>
+            <Link href="/rank-tracker" className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+              Rank Tracker
+            </Link>
+            <Link href="/about" className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+              About
+            </Link>
+            <Link href="/contact" className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+              Contact
+            </Link>
+          </nav>
+        </div>
+      </div>
+    </header>
+  );
+}
 
 interface AuditIssue {
   title: string;
@@ -112,7 +149,7 @@ export default function SeoAuditResultsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <Header />
+      <StaticHeader />
       <div className="container mx-auto px-4 py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -166,7 +203,7 @@ export default function SeoAuditResultsPage() {
                 Issues Found ({auditResult.issues.length})
               </h2>
               <div className="space-y-4">
-                                 {auditResult.issues.map((issue: AuditIssue, index: number) => (
+                {auditResult.issues.map((issue: AuditIssue, index: number) => (
                   <div key={index} className="border border-gray-200 rounded-lg p-4">
                     <div className="flex items-start gap-3">
                       <div className={`w-3 h-3 rounded-full mt-2 ${
@@ -205,7 +242,7 @@ export default function SeoAuditResultsPage() {
                 Recommendations
               </h2>
               <div className="space-y-4">
-                                 {auditResult.recommendations.map((rec: AuditRecommendation, index: number) => (
+                {auditResult.recommendations.map((rec: AuditRecommendation, index: number) => (
                   <div key={index} className="border border-green-200 bg-green-50 rounded-lg p-4">
                     <div className="flex items-start gap-3">
                       <div className="w-3 h-3 bg-green-500 rounded-full mt-2"></div>
