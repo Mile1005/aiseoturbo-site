@@ -1,1 +1,5 @@
-how 6a8a70f:pages/index.tsx
+import HomePageClient from '../components/HomePageClient';
+
+export default function HomePage() {
+  return <HomePageClient />;
+}
