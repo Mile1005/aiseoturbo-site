@@ -17,7 +17,7 @@ export default function HomePage() {
 
 	const handleSearch = () => {
 		if (searchQuery.trim()) {
-			window.location.href = `/seo-analyzer?url=${encodeURIComponent(searchQuery)}`;
+			window.location.href = `/seo-audit?url=${encodeURIComponent(searchQuery)}`;
 		}
 	};
 
